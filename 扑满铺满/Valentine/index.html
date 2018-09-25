@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"  http-equiv="Access-Control-Allow-Origin" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>鹊桥相会</title>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/jweixin-1.2.0.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div v-if="indexIsshow" id="app">
+
+        <div class="u-audio">
+            <audio id="yy" autoplay loop>
+                <source src="http://www.homeamc.cn/shopping/static/img/yin.mp3" type='audio/ogg'>
+                <source src="http://www.homeamc.cn/shopping/static/img/yin.mp3" type='audio/mpeg'>	
+            </audio>
+        </div>
+
+        <div id="home" v-if="isShow">
+            <nav class="title"></nav>
+            <div class="rule">
+                <div>
+                    <h4>活动结束</h4>
+                    <p>领奖时间：2018年8月16日 16:00-18:30</p>
+                    <p>领奖地点：苏州相城区华元路818号 方圆里商业广场·小鱼儿遇上花千骨</p>
+                </div>
+            </div>
+            <div class="start" v-on:click="start"></div>
+            <div class="charts" v-on:click="rankings"></div>
+
+            <div v-if="subscribe == '1'" class="qrcode">
+                <section>
+                    <p>请先识别二维码关注公众号</p>
+                    <img :src="code_img" alt="">
+                    <img class="codes" :src="code_img" alt="">
+                </section>
+            </div>
+        </div>
+
+        <div v-else id="action">
+            <nav class="start_title"></nav>
+            <div class="time">{{times}}s</div>
+            <div class="hand">
+                <div class="female" :style="{ left: female_left + 'rem' }"></div>
+                <div class="male" :style="{ right: male_right + 'rem' }"></div>
+            </div>
+            <div class="love" v-if="love">
+                <img class="love1" src="./img/love1.png" alt="">
+                <img class="love2" src="./img/love2.png" alt="">
+                <img class="love3" src="./img/love3.png" alt="">
+            </div>
+            <div class="footer">
+                <div class="clicks" v-on:click="contact"></div>
+            </div>
+
+            <div class="Time">
+                <img v-if="times == 1 || downTime == 1" class="imgs1" src="./img/1.png" alt="">
+                <img v-if="times == 2 || downTime == 2" class="imgs2" src="./img/2.png" alt="">
+                <img v-if="times == 3 || downTime == 3" class="imgs3" src="./img/3.png" alt="">
+            </div>
+
+        </div>
+
+            <div v-if="Rankings" class="Rankings">
+                <div v-if="countTime != 0 && Success" class="countTimes"><h4>本次时间：{{countTime}}s</h4></div>
+                <div v-if="Success" class="Ranking">
+                    <div class="scrolls">
+                        <div class="scrolls_list">
+                            <div class="Rankings_list" :class="{active:item.open_id == open_id}" v-for="(item,index) in user" :key="index">
+                                <div class="portrait">
+                                    <img :src="item.head_img_url ? item.head_img_url : 'http://img3.imgtn.bdimg.com/it/u=3137291329,696231614&fm=27&gp=0.jpg'" alt="">
+                                    <img class="no1" v-if="index == 0" src="./img/no1.png" alt="">
+                                    <img class="no2" v-if="index == 1" src="./img/no2.png" alt="">
+                                    <img class="no3" v-if="index == 2" src="./img/no3.png" alt="">
+                                </div>
+                                <div class="name"><p :class="{reds:index < 3}">No.{{index+1}}</p><p>{{item.nick_name}}</p></div>
+                                <div class="times">{{item.count_time == 16 ? '失败' : item.count_time + 's'}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="fail"></div>
+                <div class="change"><div class="again" v-on:click="start"></div><div class="share" v-on:click="iSshares"></div></div>
+            </div>
+
+        <div class="iSshare" v-on:click="iSshare" v-show="ISshare"></div>
+        <div class="iSshares" v-on:click="iSshares" v-show="ISshares"></div>
+
+    </div>
+</body>
+<script>
+    const wxhs = 'sz_fangyuanli'
+    const openIds = 'oVco7w7UcnFt_log6ZlXLbH7q5jM'
+    const nicknames = '飞灬飞'
+    const headimgurls = 'http://thirdwx.qlogo.cn/mmopen/8VwJicibNTT80ibTaiafkfroYGwe32DC0vShw8Ek1bdmhOWju7rwVoYqlJVw5ZSs9Z0n7oUe7SzjD0Z48t4d7BaBjD7DJSNSYwAY/132'
+    const isDev = false
+    const URLS = isDev ? 'http://192.168.1.193:8090' : 'http://www.homeamc.cn'
+    let imgUrl = URLS + '/shopping/kaptcha/'
+
+    const vm = new Vue({
+        el: '#app',
+        data:{
+            indexIsshow: false,  // 整个页面是否显示
+            isShow:true, female_left: -0.5, male_right: -0.5, imgUrl:'', subscribe: '0', code_img:'',
+            times:15,
+            ISshare:false,   // 分享
+            ISshares:false,   // 分享
+            Success:true,  // 是否成功
+            num: 0,         // 点击次数
+            COUNT_DOWN_TIME:0, // 游戏规定时间
+            downTime:3,    // 3s倒计时
+            startTime:'',  // 倒计时
+            love:false,   //  显示爱心
+            countTime:0,  // 实际游戏时间
+            isTime:'',   //  计时器
+            data:'',        // 排行榜列表
+            Rankings:false, // 显示排行榜
+            user:'',        // 排行榜列表
+            open_id:'',
+            isClick:false,   // 是否加载完成
+            fails:'',   // 失败
+        },
+        computed: {
+            
+        },
+        created(){
+            this.code_img = './img/' + wxhs + '.jpg'
+            this.open_id = openIds
+            this.imgUrl = imgUrl
+            this.verifyCare()
+            this.getInformation()
+            this.share()
+        },
+        methods:{
+            start(){  // 判断游戏次数
+                if(this.isClick && this.data.STATUS != 2){
+                    $.ajax({
+                        url: URLS + '/shopping/bridgeMeet/resultJudgment',
+                        type: 'post',
+                        data: { openId: openIds },
+                        dataType: 'json',
+                        success: res => {
+                            // console.log(res)
+                            if(res.code == 200) {
+                                this.isShow = false  
+                                this.Rankings = false
+                                this.love = false
+                                this.Success = true
+                                this.downTime = 3
+                                this.COUNT_DOWN_TIME = this.data.COUNT_DOWN_TIME
+                                this.countTime = 0
+                                this.times = 15
+                                this.num = 0
+                                this.female_left = -0.5
+                                this.male_right = -0.5
+                                this.fails = ''
+                                if(!this.isShow){
+                                    var down = setInterval(()=>{   // 开始倒计时 3s
+                                        this.downTime --
+                                        if(this.downTime == 0){
+                                            clearInterval(down)
+                                            this.daojishi()
+                                        }
+                                    },1000)
+                                }
+                            }else{
+                                this.ISshare = !this.ISshare
+                            }
+                        }
+                    })
+                }
+            },
+            daojishi() {
+                var n = 0
+                this.isTime = setInterval(() => {
+                    n ++
+                    var m = parseInt(n / 60)
+                    var s = parseInt(n % 60)
+                    this.countTime = parseFloat(m + "." + toDub(s))
+                    this.times = parseInt(this.COUNT_DOWN_TIME - parseFloat(m + "." + toDub(s)))
+                    if(this.times == 0){
+                        clearInterval(this.isTime)
+                        this.Rankings = true
+                        this.Success = false
+                        this.fails = 16
+                        this.loser()
+                    }
+                }, 1000 / 60)
+                function toDub(n) {
+                    return n < 10 ? "0" + n : "" + n
+                }
+            },
+            contact(){   // 点击  保存游戏时间
+                if(this.downTime == 0){
+                    this.female_left += 0.0188 
+                    this.male_right += 0.0188 
+                    this.num ++
+                    if(this.num == 100){
+                        this.love = true
+                        clearInterval(this.isTime)
+                        this.loser()
+                    }
+                }
+            },
+            loser(){
+                $.ajax({
+                    url: URLS + '/shopping/bridgeMeet/gameOver',
+                    type: 'post',
+                    data: { wxh: wxhs, openId: openIds, countTime: this.fails || this.countTime, nickname: nicknames, headimgurl: headimgurls },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if (res.code == 200 && this.fails == '') {
+                            this.rankings()
+                        }
+                    }
+                })
+            },
+            rankings(){  // 获取排行榜
+                $.ajax({
+                    url: URLS + '/shopping/bridgeMeet/rankings',
+                    type: 'post',
+                    data: {},
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            this.user = res.data
+                            this.Success = true
+                            this.Rankings = true
+                        }
+                    }
+                })
+            },
+            getInformation(){  // 获取游戏信息
+                $.ajax({
+                    url: URLS + '/shopping/bridgeMeet/activity',
+                    type: 'post',
+                    data: {},
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            this.isClick = true
+                            this.data = res.data[0]
+                            this.COUNT_DOWN_TIME = parseInt(res.data[0].COUNT_DOWN_TIME)
+                        }
+                    }
+                })
+            },
+            iSshare(){
+                this.ISshare = !this.ISshare
+            },
+            iSshares(){
+                this.ISshares = !this.ISshares
+            },
+            share(){  // 分享
+                $.ajax({
+                    url: URLS + '/shopping/bridgeMeet/shire',
+                    type: 'post',
+                    data: { wxh : wxhs, openId: openIds },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            this.wxs(res)
+                        }
+                    }
+                })
+            },
+            verifyCare(){  // 判断是否关注
+                $.ajax({
+                    url: URLS + '/shopping/bridgeMeet/verifyCare',
+                    type: 'post',
+                    data: { wxh : wxhs, openId: openIds },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            this.subscribe = res.data.subscribe
+                            this.indexIsshow = true
+                        }
+                        this.subscribe = '0'
+                        this.indexIsshow = true
+                    }
+                })
+            },
+            wxs(res){
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.data.appId, // 必填，公众号的唯一标识
+                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: res.data.nonce, // 必填，生成签名的随机串
+                    signature: res.data.signature,// 必填，签名
+                    jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline'] // 必填，需要使用的JS接口列表
+                })
+                wx.ready(() => {
+                    wx.onMenuShareAppMessage({
+                        title: '鹊桥相会', // 分享标题
+                        desc: '你的情人节礼物，我方圆里包了!', // 分享描述
+                        link: 'http://www.homeamc.cn/shopping/meet/seminar?wxh=' + wxhs, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'http://www.homeamc.cn/shopping/static/img/meet.png', // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: (res)=> {
+                            // console.log(res)
+                            this.updateRecords()
+                        },
+                        fail: function (res) {
+                            // console.log(res)
+                        }
+                    })
+                    wx.onMenuShareTimeline({
+                        title: '鹊桥相会', // 分享标题
+                        link: 'http://www.homeamc.cn/shopping/meet/seminar?wxh=' + wxhs, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'http://www.homeamc.cn/shopping/static/img/meet.png', // 分享图标
+                        success: (res)=> {
+                            // console.log(res)
+                            this.updateRecords()
+                        },
+                        fail: function (res) {
+                            // console.log(res)
+                        }
+                    })
+                    var bjyy=document.getElementById("yy");
+                    bjyy.play();
+                })
+            },
+            updateRecords(){  // 分享
+                $.ajax({
+                    url: URLS + '/shopping/bridgeMeet/updateRecords',
+                    type: 'post',
+                    data: { openId: openIds },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            
+                        }
+                    }
+                })
+            },
+        },
+    })
+
+
+    $(document).ready(function(){
+        (function () {
+            var deviceWidth = document.documentElement.clientWidth
+            if (deviceWidth > 640) deviceWidth = 640
+            document.documentElement.style.fontSize = deviceWidth / (750 / 100) + 'px'   // 750 设计图大小  100 换算rem
+        })()
+
+        FastClick.prototype.onTouchEnd = function(event) {
+            var forElement, trackingClickStart, targetTagName, scrollParent, touch, targetElement = this.targetElement
+
+            if ((event.timeStamp - this.lastClickTime) < this.tapDelay) {
+                var target = event.target || event.srcElement
+                if(target.nodeName.match(/input|textarea/i)){
+                    event.preventDefault();
+                }
+            }
+        }
+        FastClick.attach(document.body)
+
+        document.addEventListener('DOMContentLoaded', function () {
+                function audioAutoPlay() {
+                    var audio = document.getElementById('yy')
+                    audio.play()
+                    document.addEventListener("WeixinJSBridgeReady", function () {
+                        audio.play()
+                    }, false)
+                }
+                audioAutoPlay()
+            })
+            var bjyy = document.getElementById("yy");
+            bjyy.play();
+            $(".u-audio").addClass("u-play");
+            $(".u-audio").click(function () {
+                if ($(this).attr("class") == "u-audio") {
+                    bjyy.play();
+                    $(".u-audio").addClass("u-play");
+                } else if ($(this).attr("class") == "u-audio u-play") {
+                    bjyy.pause();
+                    $(".u-audio").removeClass("u-play");
+                }
+            });
+    })
+</script>
+</html>

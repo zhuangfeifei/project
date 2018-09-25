@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>扑满商城</title>
+    <link rel="stylesheet" href="https://unpkg.com/vant/lib/vant-css/index.css">
+	<link rel="stylesheet" href="./assets/font-awesome-4.7.0/css/font-awesome.css">
+    <!--<script src="${ctxPath}/static/js/jquery.min.js?v=2.1.4"></script>-->
+	<script src="./assets/jquery.js"></script>
+</head>
+<body>
+    <div id="app" class="home">
+		<nav id="nav">
+            <div class="header">
+                <i @click="history" class="fa fa-angle-left" aria-hidden="true"></i>
+                <span>提交订单</span>
+            </div>
+        </nav>
+        <div class="dizhi" :class="{top:!index}" v-for="(item,index) in data" :key="index">
+            <p>订单编号：{{item.data.orderNo}}</p>
+            <p>订单金额：￥{{item.data.orderMoney}}</p>
+        </div>
+        <div class="jine">
+            <div>
+                <span>选择支付方式</span>
+            </div>
+            <div>
+                <img src="./assets/img/yuezhifu@2x.png" alt="">   
+                <span class="zhifubao">余额支付</span>
+                <div class="zhifubao1">
+                    <input class="magic-radio" type="radio" name="radio" id="r2" value="支付宝支付" checked>
+                    <label for="r2" class="mo"></label>
+                </div>
+            </div>
+            <div>
+                <img id="wei" src="./assets/img/wechat@2x.png" alt="">
+                <span class="weixin">微信支付</span>
+                <div class="weixin1">
+                    <input class="magic-radio" type="radio" name="radio" id="r1" value="微信支付">
+                    <label for="r1" class="mo"></label>
+                </div>
+            </div>
+        </div>
+
+                <van-popup v-model="shows" position="bottom" :overlay="true">
+                    <h4>请输入支付密码</h4>
+                    <!-- 密码输入框 -->
+                    <!--<van-password-input id="aaa" :value="value" info="密码为 6 位数字" @focus="showKeyboard = true"/>-->
+					<div id="kuang">
+						<div><span v-show="value.length > 0">●</span></div>
+						<div><span v-show="value.length > 1">●</span></div>
+						<div><span v-show="value.length > 2">●</span></div>
+						<div><span v-show="value.length > 3">●</span></div>
+						<div><span v-show="value.length > 4">●</span></div>
+						<div><span v-show="value.length > 5">●</span></div>
+					</div>
+					<div class="van-password-input__info">密码为 6 位数字</div>
+                    <!-- 数字键盘 -->
+                    <van-number-keyboard :show="showKeyboard" @input="onInput" @delete="onDelete" @blur="showKeyboard = true" />
+                </van-popup>
+        
+        <button @click="qwe" type="button" class="btn">确认支付</button>
+    </div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vant/lib/vant.min.js"></script>
+<script>
+//     var  json=location.search;
+// json=unescape(json).match(/\{.+?\}/);
+// json = eval("("+json+")");
+// console.log(json)
+
+
+	new Vue({
+      el: '#app',
+	  data(){
+        return{
+            data:'',value: '',showKeyboard: true,shows:false
+        }
+    },
+    created(){
+        document.body.scrollTop = 0
+        document.documentElement.scrollTop = 0
+        // this.data = this.$store.state.shangPing
+    },
+    methods:{
+        history() {
+            history.go(-1)
+        },
+        qwe(){
+            // this.$toast('提示文案');
+            this.$toast.fail('asd');
+            // if($('#r2').is(':checked')){
+            //     this.value = ''
+            //     this.show = true
+            // }else{
+            //     var orderId = this.orderIds()
+            //     this.wxPay(orderId)
+            // }
+        },
+        onInput(key) {
+            this.value = (this.value + key).slice(0, 6)
+            var orderId = this.orderIds()
+            if(this.value.length == 6){
+                this.yue(orderId,this.value)
+            }
+        },
+        onDelete() {
+            this.value = this.value.slice(0, this.value.length - 1)
+        },
+        orderIds(){
+            var id = new Array
+            for (var i = 0; i < this.data.length; i++) {
+                id.push(this.data[i].data.orderId)
+            }
+            var orderId = id.join(',')
+            return orderId
+        },
+        yue(orderId,mm){
+            // console.log(orderId)
+			$.ajax({
+				url:'http://www.homeamc.cn:8090/shopping/api/order/pay',
+				type:'post',
+				data:{access_type:'WXH5',orderIds:'${orderId}',wxh:'${wxh}',openId:'${openId}',orderIds:orderId,payType:3,payPwd:mm},
+				dataType:'json',
+				success:function(res){
+					window.location.href = 'http://www.homeamc.cn:8090/shopping/wx/index?wxh=${wxh}&openId=${openId}#/Myorder';
+				}
+			})
+            // this.$axios.post(this.$httpUrl.pay,$.param({access_type:'WXH5', wxh: this.$storage.getStore('wx'), openId:this.$storage.getStore('openIds'),orderIds:orderId,payType:3,payPwd:mm}) )
+            // .then(response => {
+            //     this.shows = false
+            //     // console.log(response.data)
+            //     if(response.data.code == 200){
+            //         this.$vux.toast.show({
+            //             text: response.data.message
+            //         })
+            //         setTimeout(() => {
+            //             this.$vux.toast.hide()
+            //             this.$router.push({name:'myorder'})
+            //         }, 1000)
+            //     }else{
+            //         this.$vux.loading.show({
+            //             text: response.data.message
+            //         })
+            //         setTimeout(() => {
+            //             this.$vux.loading.hide()
+            //         }, 3000)
+            //     }
+            // })
+            // .catch(error => {
+            //     this.shows = false
+            //     // console.log(error)
+            //     this.$vux.loading.show({
+            //         text: '服务器异常'
+            //     })
+            //     setTimeout(() => {
+            //         this.$vux.loading.hide()
+            //     }, 3000)
+            // })
+        },
+        wxPay(){
+            alert('laile');
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(), false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady()); 
+                    document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady());
+                }
+            }else{
+                this.onBridgeReady();
+            }
+        },
+        onBridgeReady(){
+            alert('youlaile');
+            $.ajax({
+            url:'http://www.homeamc.cn:8090/shopping/api/order/h5pay',
+            data:{access_type:'WXH5',orderIds:'${orderId}',wxh:'${wxh}',openId:'${openId}'},
+            type:'POST',
+            dataType:'json',
+            success:function(data){
+                alert('hailaile');
+                if (data.code == 200) {
+                        WeixinJSBridge.invoke(
+                            'getBrandWCPayRequest', {
+                                "appId": data.data.appId,     //公众号名称，由商户传入     
+                                "timeStamp": data.data.timestamp,         //时间戳，自1970年以来的秒数     
+                                "nonceStr": data.data.nonce, //随机串     
+                                "package": data.data.packageName,
+                                "signType": data.data.signType,         //微信签名方式：     
+                                "paySign": data.data.signature //微信签名 
+                            },
+                            function (res) {
+                                if (res.err_msg == "get_brand_wcpay_request:ok") {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+                                    window.location.href = 'http://www.homeamc.cn:8090/shopping/wx/index?wxh=${wxh}&openId=${openId}#/Myorder';
+                                } else {
+                                    alert(res.err_msg);
+                                }
+                            }
+                        );
+                    } else {
+                        alert(data.message);
+                    }  
+                }
+		    });
+	    }
+    }
+    });
+   	function wxPay(){
+   		alert('laile');
+		if (typeof WeixinJSBridge == "undefined"){
+		   if( document.addEventListener ){
+		       document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		   }else if (document.attachEvent){
+		       document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+		       document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		   }
+		}else{
+		   onBridgeReady();
+		}
+    }
+       
+       
+	function onBridgeReady(){
+		alert('youlaile');
+		$.ajax({
+		url:'http://www.homeamc.cn:8090/shopping/api/order/h5pay',
+		data:{access_type:'WXH5',orderIds:'${orderId}',wxh:'${wxh}',openId:'${openId}'},
+		type:'POST',
+		dataType:'json',
+		success:function(data){
+			alert('hailaile');
+			if (data.code == 200) {
+					WeixinJSBridge.invoke(
+						'getBrandWCPayRequest', {
+							"appId": data.data.appId,     //公众号名称，由商户传入     
+							"timeStamp": data.data.timestamp,         //时间戳，自1970年以来的秒数     
+							"nonceStr": data.data.nonce, //随机串     
+							"package": data.data.packageName,
+							"signType": data.data.signType,         //微信签名方式：     
+							"paySign": data.data.signature //微信签名 
+						},
+						function (res) {
+							if (res.err_msg == "get_brand_wcpay_request:ok") {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+								window.location.href = 'http://www.homeamc.cn:8090/shopping/wx/index?wxh=${wxh}&openId=${openId}#/Complete';
+							} else {
+								alert(res.err_msg);
+							}
+						}
+					);
+				} else {
+					alert(data.message);
+				}  
+		}
+		});
+		
+	}
+   	
+       function fontSize(){
+    		var deviceWidth = document.documentElement.clientWidth;
+    		if(deviceWidth > 600){
+    			deviceWidth = 600 ;
+    		}
+    		document.documentElement.style.fontSize = deviceWidth / 100 + 'px'
+    	}
+    	fontSize()
+    	window.onresize = function(){
+    		fontSize()
+    	}
+       
+</script>
+<style>
+	*{
+		box-sizing: border-box; 
+	}
+	.home{
+    padding-top: 15vw; font-size: 4vw;
+}
+
+.van-popup--bottom{
+    height: 58vh; width: 100vw; text-align: center;
+}
+h4{
+    margin: 5vw auto;
+}
+
+
+/*顶部*/
+#nav{
+    width: 100%; height: 15vw;
+    position: fixed; top: 0;
+    background-color: white;
+    border-bottom: 0.3vw solid gainsboro;
+}
+#nav .header{
+    width: 100%; height: 100%;
+    text-align: center;
+    line-height: 15vw;
+} 
+.fa-angle-left{
+    float: left; margin-left: 5vw;
+    font-size: 10vw;
+    line-height: 14vw; color: black
+}
+#nav .header span{
+    margin-left: -8vw;
+    font-size: 5.5vw; 
+    line-height: 15vw;
+}
+
+
+
+.dizhi{
+    width: 100%; height: 30vw; padding: 5vw 3vw; border-bottom: 3vw solid #f2f2f2;
+}
+.top{
+     border-top: 3vw solid #f2f2f2;
+}
+
+
+.jine{
+    width: 100%; font-size: 4vw; padding: 3vw;
+}
+.jine>div{
+    width: 100%; height: 15vw; border-bottom: 1px solid gainsboro; padding: 2vw 0vw; line-height: 11vw;
+}
+.jine img{
+    width: 8vw; height: 8vw; float: left; margin-top: 1.5vw; margin-right: 2vw;
+}
+#wei{
+    width: 8vw; height: 7vw;
+}
+
+.btn{
+    background-color: red; color: white; outline: none!important; border:0;
+    width: 90%; height: 13vw; margin: 8vw 5%; font-size: 4.5vw; border-radius: 1vw;
+}
+
+
+
+
+.zhifubao,.weixin{
+    float: left;
+}
+.zhifubao1,.weixin1{
+    float: right; width: 10vw; height: 100%; margin-right: 5vw; padding-top: 1vw;
+}
+
+
+
+#kuang{
+	width: 90%; margin: 0 5%; display: flex; border: 0.3vw solid #e5e5e5;
+}
+#kuang>div{
+	width: 15vw; height: 13vw; border-right: 0.3vw solid #e5e5e5; text-align: center; line-height: 13vw; font-size: 8vw;
+}
+#kuang>div:nth-child(6){
+	border:0;
+}
+
+
+
+@keyframes hover-color {
+  from {
+    border-color: #c0c0c0; }
+  to {
+    border-color: #3e97eb; } }
+
+.magic-radio{
+  position: absolute;
+  display: none; }
+
+.magic-radio[disabled]{
+  cursor: not-allowed; }
+
+.magic-radio + label{
+  position: relative;
+  display: block; line-height: 9vw;
+  padding-left: 12vw;
+  cursor: pointer;
+  vertical-align: middle; }
+  .magic-radio + label:hover:before{
+    animation-duration: 0.4s;
+    animation-fill-mode: both;
+    animation-name: hover-color; }
+  .magic-radio + label:before{
+    position: absolute;
+    top: 2vw;
+    left: 5vw;
+    display: inline-block;
+    width: 5vw;
+    height: 5vw;
+    content: '';
+    border: 0.3vw solid #c0c0c0; }
+  .magic-radio + label:after{
+    position: absolute;
+    display: none;
+    content: ''; }
+
+.magic-radio:checked + label:before{
+  animation-name: none; }
+
+.magic-radio:checked + label:after{
+  display: block; }
+
+.magic-radio + label:before {
+  border-radius: 50%; }
+
+.magic-radio + label:after {
+  top: 3.2vw;
+  left: 6.2vw;
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  background: #3e97eb; }
+
+.magic-radio:checked + label:before {
+  border: 0.3vw solid #3e97eb; }
+
+.magic-radio:checked[disabled] + label:before {
+  border: 0.3vw solid #c9e2f9; }
+
+.magic-radio:checked[disabled] + label:after {
+  background: #c9e2f9;}
+</style>
+</html>

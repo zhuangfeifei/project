@@ -1,0 +1,40 @@
+*{
+    /*box-sizing: border-box; margin: 0; padding: 0;*/
+}
+body{
+    width: 100%; font-size: 20px; padding: 50px 0; background-color: #14465d;
+
+}
+
+.main{
+    width: 1000px; height: 610px; margin: 0 auto;
+}
+.main div{
+    float: left;
+}
+
+
+
+.footter{
+    width: 500px; border: 1px solid black; margin-top: 20px;
+}
+.footter>div{
+    width: 100%; height: 35px; position: relative;
+}
+.footter>div>span{
+    display: inline-block; width: 20px; height: 35px; line-height: 35px; position: absolute; top: 0; left: -20px; text-align: center;
+}
+.footter ul{
+    list-style: none; display: flex; justify-content: space-around; box-sizing: border-box; margin: 0; padding: 0;
+}
+.footter li{
+    width: 166.66px; height: 100%; text-align: center; line-height: 35px; font-weight: 600; font-size: 15px;
+    border: 1px solid black;
+}
+.footter li:nth-child(6){
+    border-right: 0;
+}
+
+.collapse{
+    width: 100%; height: 35px; line-height: 30px;
+}

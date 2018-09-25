@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>商铺网签统计</title>
+    <link rel="stylesheet" href="./css/sign.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="./js/jquery.js"></script>
+    <script src="./js/echarts.common.min.js"></script>
+    <script src="./js/progress.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+</head>
+<body>
+    
+    <div class="main">
+        
+    </div>
+
+</body>
+<script>
+
+    var list = [
+        { title:'签约统计（馆位）',  data: ["A馆", "B馆", "C馆", "D馆", "E馆"], datas: [15, 20, 36, 10, 20], datas1:[12, 30, 25, 8, 10] },
+        { title:'签约统计（近6个月）',  data: ["1月", "2月", "3月", "4月", "5月", "6月"], datas: [15, 20, 36, 10, 20, 17], datas1:[12, 30, 25, 8, 10, 14] },
+    ]
+
+    for(var i = 0; i < list.length; i ++){
+        var a = '<div id="signed'+i+'" style="width: 500px;height:300px;"></div>'
+        $('.main').append(a)
+        var myChart = echarts.init(document.getElementById('signed'+i+''))
+        var option = {
+            title: {
+                text: list[i].title
+            },
+            tooltip: {},
+            legend: {
+                data: ['已网签', '未网签']
+            },
+            xAxis: {
+                data: list[i].data,
+                
+            },
+            yAxis: {},
+            series: [{
+                name: '已网签',
+                type: 'bar',
+                label: {
+                    normal: {
+                        show: true
+                    }
+                },
+                data: list[i].datas
+            },{
+                name: '未网签',
+                type: 'bar',
+                label: {
+                    normal: {
+                        show: true
+                    }
+                },
+                data: list[i].datas1,
+            }]
+        }
+        myChart.setOption(option)
+    }
+
+    var lists = [
+        { title:'签约统计（状态）', a: 30, b:70, c:'已网签', d:'未网签', e: 100 },
+    ]
+    for(var i = 0; i < lists.length; i ++){
+        var a = '<div id="state'+i+'" style="width: 500px;height:300px;"></div>'
+        $('.main').append(a)
+        var myChart = echarts.init(document.getElementById('state'+i+''))
+        var f = {
+            title : {
+                text: lists[i].title,
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: [lists[i].c, lists[i].d]
+            },
+            series : [
+                {
+                    name: '',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:lists[i].a, name:lists[i].c+' '+lists[i].a},
+                        {value:lists[i].b, name:lists[i].d+' '+lists[i].b},
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }
+        myChart.setOption(f)
+    }
+    var ds = '<div class="footter"><div><ul><li>馆位</li><li>签约商铺数</li><li>未签约商铺数</li><li>签约率</li></ul></div></div>'
+    $('.main').append(ds)
+    
+    var table_list = [
+        { a:'A', b:'1', c:'1', d:'1', asd:'sfvsdgd fgdgd vbdf'},
+        { a:'B', b:'1', c:'1', d:'1', asd:'sfvsdgd fgdgd vbdf'},
+        { a:'C', b:'1', c:'1', d:'1', asd:'sfvsdgd fgdgd vbdf'},
+        { a:'D', b:'1', c:'1', d:'1', asd:'sfvsdgd fgdgd vbdf'},
+        { a:'E', b:'1', c:'1', d:'1', asd:'sfvsdgd fgdgd vbdf'},
+    ]
+    var z = 0,x = 0,c = 0
+    for(var i = 0; i < table_list.length; i ++){
+        var s = '<div><span data-toggle="collapse" data-target="#demo'+i+'" style="font-size:25px;">+</span><ul><li>'+table_list[i].a+'</li><li>'+table_list[i].b+'</li><li>'
+            +table_list[i].c+'</li><li>'+table_list[i].d+'</li></ul></div>'
+        var d = '<div id="demo'+i+'" class="collapse">'+table_list[i].asd+'</div>'
+        $('.footter').append(s)
+        $('.footter').append(d)
+        
+        z += parseInt(table_list[i].b)
+        x += parseInt(table_list[i].c)
+        c += parseInt(table_list[i].d)
+        if(i == table_list.length - 1){
+            var g = '<div><ul><li>合计</li><li>'+z+'</li><li>'+x+'</li><li>'+c+'</li></ul></div>'
+            $('.footter').append(g)
+        }
+    }
+
+
+</script>
+</html>

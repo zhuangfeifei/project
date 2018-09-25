@@ -1,0 +1,288 @@
+<!doctype html>
+<html>
+<title></title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="js/jquery.min.js" ></script>
+<script type="text/javascript" src="js/layer/layer.js"></script>
+<script type="text/javascript" src="js/context/context.js"></script>
+<script type="text/javascript" src="js/drag.js" ></script>
+<link rel="stylesheet" type="text/css" href="js/context/context.standalone.css">
+<style type="text/css">
+html,body{margin:0;padding:0;font:14px/1.5em simsun;overflow:hidden;}
+#canvas{position:absolute;left:0px;top:0px;z-index:9;border:2px dashed #ccc;padding:10px;background:#fff;}
+.transparent{filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity:0.5;opacity:0.5;}
+.box{cursor:move;position:absolute;z-index:99; overflow: hidden!important;}
+.box .bg{width:1600px;height:1064px;}
+.box .coor{width:10px;height:10px;overflow:hidden;cursor:se-resize;position:absolute;right:0;bottom:0;background-color:red;}
+.box .content{position:absolute;left:50%;top:50%;z-index:99;text-align:center;font:bold 14px/1.5em simsun;}
+p{text-align: center;}
+#debug{position:absolute;right:10px;top:10px;z-index:88;border:1px solid #ccc;width:100px;height:100px;background:#fff;}
+#toolbar{position:absolute;left:10px;top:10px;z-index:88;}
+
+</style>
+</head>
+<body class="list">
+<!-- <pre id="debug"></pre> -->
+<div id="toolbar">
+	<input type="button" value="自定义图形" class="btn" id="btn_zdy" />
+	<input type="button" value="确定" class="btn" id="btn_qd" />
+	<input type="button" value="获取数据" class="btn" id="btn_save" />
+</div>
+<div id="canvas">
+	<img src="demo_picture.jpg" />
+</div>
+</body>
+</html>
+<script>
+$(function(){
+	//初始化计数器
+	var num = 0;
+	//区块锁定标识
+	var lock = false;
+	//加载layer拓展
+	layer.config({
+	    extend: 'extend/layer.ext.js'
+	});
+	//右键菜单参数
+	context.init({
+	    fadeSpeed: 100,
+	    filter: function ($obj){},
+	    above: 'auto',
+	    preventDoubleContext: true,
+	    compress: false
+	});
+	//调试输出方法
+	function debug(msg){
+		$("#debug").text(msg);
+	}
+	function createBox(data){
+		var dataId = data.id || '';
+		var value = data.text || '';
+		var color = data.color || '';
+		var height = data.height || 0;
+		var width = data.width || 0;
+		var pageX = data.w || 0;
+		var pageY = data.h || 0;
+		var top = data.top || 0;
+		var left = data.left || 0;
+		var color = data.color || 'lime';
+		
+		//更新计数器并记录当前计数
+		var curNum = num++;
+		console.log(data)
+		
+		//创建区域块
+		var pos = $("#canvas").position();
+			var box = $('<div class="box" style="width:'+width+'px!important; height:'+height+'px!important;overflow: hidden!important;" rel="'+curNum+'" dataId="'+dataId+'"><svg class="bg" style="margin-top:-'+pageY+';margin-left:-'+pageX+';" xmlns="http://www.w3.org/2000/svg" version="1.1"><polygon class="poy" rel="'+curNum+'" dataId="'+dataId+'" points="'+data.a+'" style="fill:'+color+';stroke-width:1"/><p class="content">'+value+'</p></svg></div>').css({
+				top : top,
+				left : top
+			}).appendTo("#canvas");
+		
+		//计算文本位置
+		box.find('.content').css({
+			marginLeft : box.find('.content').width()/2*-1,
+			marginTop : box.find('.content').height()/2*-1
+		});
+		$('.box[rel='+curNum+'] polygon').click(function(){
+			var a = $(this).attr('dataId')
+			alert(a)
+		})
+		//创建右键菜单
+		context.attach('.poy[rel='+curNum+']', [
+			{header: '操作'},
+			{text: '编辑区域说明', action: function(e){
+			    	e.preventDefault();
+			    	layer.prompt({
+						title: '请输入区域说明',
+						formType: 2,
+						value: $('.box[rel='+curNum+'] .content').text()
+					}, function(value, index, elem){
+						layer.close(index);
+						// $('.dropdown-menu').hide();
+						var curCont = $('.box[rel='+curNum+'] .content');
+						curCont.text(value).css({
+							marginLeft : curCont.width()/2*-1,
+							marginTop : curCont.height()/2*-1
+						});
+					});
+			    }
+			},
+			{text: '删除区域', action: function(e){
+			    	e.preventDefault();
+					$('.box[rel='+curNum+']').remove();
+					$('.dropdown-menu').hide();
+			    }
+			},
+			{divider: true},
+			{header: '更改颜色'},
+			{text: '<font color="orange">橙色</font>', action: function(e){
+			    	e.preventDefault();
+			    	$('.box[rel='+curNum+'] polygon').css('fill', 'orange');
+					// $('.dropdown-menu').hide();
+			    }
+			},
+			{text: '<font color="red">红色</font>', action: function(e){
+			    	e.preventDefault();
+			    	$('.box[rel='+curNum+'] polygon').css('fill', 'red');
+					// $('.dropdown-menu').hide();
+			    }
+			},
+			{text: '<font color="blue">蓝色</font>', action: function(e){
+			    	e.preventDefault();
+					$('.box[rel='+curNum+'] polygon').css('fill', 'blue');
+					// $('.dropdown-menu').hide();
+			    }
+			},
+			{text: '<font color="green">绿色</font>', action: function(e){
+			    	e.preventDefault();
+					$('.box[rel='+curNum+'] polygon').css('fill', 'green');
+					// $('.dropdown-menu').hide();
+			    }
+			},
+			{text: '<font color="purple">紫色</font>', action: function(e){
+			    	e.preventDefault();
+					$('.box[rel='+curNum+'] polygon').css('fill', 'purple');
+					// $('.dropdown-menu').hide();
+			    }
+			},
+			{text: '<font color="yellow">黄色</font>', action: function(e){
+			    	e.preventDefault();
+					$('.box[rel='+curNum+'] polygon').css('fill', 'yellow');
+					// $('.dropdown-menu').hide();
+			    }
+			}
+		]);
+	}
+	//添加区域
+	var a = [],values = ''
+	$('#btn_zdy').click(function(){
+		//弹出区域说明输入框
+		layer.prompt({
+			title: '请输入区域说明',
+			formType: 2 //0:input,1:password,2:textarea
+		}, function(value, index, elem){
+			values =value
+			layer.close(index);
+			var i = 0,b = []
+			$(document).click(function(ev){                
+				var oEvent=ev||event;
+				var c = oEvent.clientX+','+oEvent.clientY;//     IE浏览器兼容
+				if(i>0){
+					b.push(c)
+				}
+				i ++
+				a = b
+			})
+		});
+		
+	});
+	$("#btn_qd").click(function(){
+		console.log(a)
+		var s = [],d = []
+		for(var i = 0; i < a.length; i ++){
+			s.push(a[i].split(',')[0])
+			d.push(a[i].split(',')[1])
+		}
+		console.log(s)
+		s.sort(function(a,b){return a-b;})
+		d.sort(function(a,b){return a-b;})
+		var w = s[0], h = d[0],
+		    mw = s[s.length - 1] - s[0],
+			mh = d[d.length - 1] - d[0]
+			createBox({
+				text : values,
+				width : mw,
+				height : mh,
+				w:w,
+				h:h,
+				a:a
+			});
+	});
+	//获取所有区块
+	$('#btn_save').click(function(){
+		var data = [];
+		$('.box').each(function(){
+			var box = {};
+			box['id'] = $(this).find('polygon').attr('dataId');
+			box['text'] = $(this).find('.content').text();
+			box['color'] = $(this).find('polygon').css('fill');
+			box['pageX'] = $(this).position().left;
+			box['pageY'] = $(this).position().top;
+			console.dir(box);
+			// data.push(box);
+			var s = $(this).find('polygon').attr('points')
+			console.log(s)
+		});
+	});
+	//创建拖拽方法
+	$("#canvas").mousedown(function(e){
+		var canvas = $(this);
+	    e.preventDefault();
+	    var pos = $(this).position();
+	    this.posix = {'x': e.pageX - pos.left, 'y': e.pageY - pos.top};
+	    $.extend(document, {'move': true, 'move_target': this, 'call_down' : function(e, posix){
+	    	canvas.css({
+	    		'cursor': 'move',
+	    		'top': e.pageY - posix.y,
+				'left': e.pageX - posix.x
+			});
+	    }, 'call_up' : function(){
+	    	canvas.css('cursor', 'default');
+	    }});
+	}).on('mousedown', '.box', function(e) {
+		if(lock) return;
+	    var pos = $(this).position();
+	    this.posix = {'x': e.pageX - pos.left, 'y': e.pageY - pos.top};
+	    $.extend(document, {'move': true, 'move_target': this});
+	    e.stopPropagation();
+	}).on('mousedown', '.box .coor', function(e) {
+		var $box = $(this).parent();
+	    var posix = {
+	            'w': $box.width(), 
+	            'h': $box.height(), 
+	            'x': e.pageX, 
+	            'y': e.pageY
+	        };
+	    $.extend(document, {'move': true, 'call_down': function(e) {
+	    	$box.css({
+	            'width': Math.max(30, e.pageX - posix.x + posix.w),
+	            'height': Math.max(30, e.pageY - posix.y + posix.h)
+	        });
+	    }});
+	    e.stopPropagation();
+	});
+	//测试加载
+	var loadData = [
+		{id : 1001,text : "阿斯达",color : "rgb(255, 0, 0)",height : 70,width : 77,pageX : 627,pageY : 364, point:'129,203,52,240,91,267'},
+		{id : 1001,text : "阿斯达",color : "rgb(255, 0, 0)",height : 70,width : 77,pageX : 427,pageY : 164, point:'195,233,100,299,162,382,271,321'},
+	];
+	$.each(loadData, function(i, row){
+		var s = [],d = [], c = row.point.split(',')
+		for(var i = 0; i < c.length; i ++){
+			if(i%2==0){                     
+				s.push(c[i])
+			}else{
+				d.push(c[i])
+			}
+		}
+		s.sort(function(a,b){return a-b;})
+		d.sort(function(a,b){return a-b;})
+		var w = s[0], h = d[0],
+		    mw = s[s.length - 1] - s[0],
+			mh = d[d.length - 1] - d[0]
+			createBox({
+				text : row.text,
+				width : mw,
+				height : mh,
+				w:w,
+				h:h,
+				a:c,
+				left:row.pageX,
+				top:row.pageY,
+				color:row.color,
+				id:row.id
+			});
+	});
+});
+</script>

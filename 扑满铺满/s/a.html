@@ -1,0 +1,81 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" token="D8EE6CE8A5BA4889290382E9CC8F3241">
+    <script src="./jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form id="myform" name="myform" method="post" onsubmit="return sumbitTest();"
+      action="https://api.icarcom.cn/api/parking/pay">  
+    <table>  
+        <tr>  
+            <td>姓名:</td>  
+            <td> <input type="text" name="paymoney" /> </td>  
+        </tr>   
+        <tr>  
+            <td>姓名:</td>  
+            <td> <input type="text" name="prcId" /> </td>  
+        </tr>   
+        <tr>  
+            <td>姓名:</td>  
+            <td> <input type="text" name="deviceimei" /> </td>  
+        </tr>   
+        <tr>  
+            <td>姓名:</td>  
+            <td> <input type="text" name="mchId" /> </td>  
+        </tr>   
+        <tr>  
+            <td>姓名:</td>  
+            <td> <input type="text" name="token" /> </td>  
+        </tr>   
+        <tr>  
+            <td colspan="2">  
+                <input type="submit" value="Submit普通提交">  
+                <input type="button" id="ajaxBtn" value="AJAX提交" />  
+                <input type="button" id="jqueryBtn" value="jQuery提交" />  
+                <input type="button" id="jsBtn" value="JS提交" />  
+                <input type="submit" value="onSubmit提交" />  
+            </td>  
+        </tr>  
+    </table>  
+</form>  
+
+</body>
+<script type="text/javascript">  
+    $(function() {  
+        //ajax提交  
+        $("#ajaxBtn").click(function() {  
+            var params = $("#myform").serialize();  
+            console.log(params)
+            $.ajax( {  
+                type : "POST",  
+                url : "https://api.icarcom.cn/api/parking/pay",  
+                data : params,  
+                headers:{
+                    'token':'D8EE6CE8A5BA4889290382E9CC8F3241'
+                },
+                success : function(msg) {  
+                    alert("success: " + msg);  
+                }  
+            });  
+        })  
+  
+        //jQuery提交  
+        $("#jqueryBtn").click(function(){  
+            $("#myform").submit();  
+        })  
+  
+        //js提交   
+        $("#jsBtn").click(function(){  
+            document.myform.action="https://api.icarcom.cn/api/parking/pay";     
+            document.myform.submit();     
+        })  
+    })  
+    function sumbitTest(){  
+        return true; //return false则不会提交   
+    }  
+</script>  
+</html>

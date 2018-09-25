@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+        }
+        #asd{
+            width: 600px; height: 600px; margin: 100px auto; border: 1px solid red; position: relative; float: left;
+        }
+        #dv {
+            width:100px;
+            height:100px;
+            background-color:black;
+            border-radius:50%;
+            position:absolute; display: none;
+        }
+        #as{
+            width: 100px; height: 100px; background-color: red; position: absolute; display: none;
+        }
+        .zx{
+            width: 150px; height: 500px; float: left; margin: 100px auto;
+        }
+        .dv {
+            width:100px;
+            height:100px;
+            background-color:black;
+            border-radius:50%;
+        }
+        .as{
+            width: 100px; height: 100px; background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="zx">
+        <section class="dv"></section>
+        <section class="as"></section>
+    </div>
+    <div id="asd">
+        <div id="dv"></div>
+        <section id="as"></section>
+    </div>
+</body>
+<script>
+        window.onload = function(){
+            var dvs = document.getElementsByClassName('dv')[0]
+            var ass = document.getElementsByClassName('as')[0]
+            var dv = document.getElementById('dv')
+            var s = document.getElementById('as')
+            dvs.onclick = function(){
+                dv.style.display = 'block'
+                // Drag('dv')
+            }
+            ass.onclick = function(){
+                as.style.display = 'block'
+                // Drag('as')
+            }
+            var a = [dv,as]
+            
+            for(let i = 0; i < a.length; i ++){
+                a[i].onmousedown = function(ev){ 
+            　　    var oevent = ev || event
+
+            　　　　var distanceX = oevent.clientX - a[i].offsetLeft
+            　　　　var distanceY = oevent.clientY - a[i].offsetTop
+
+            　　　　document.onmousemove = function(ev){
+            　　　　　　var oevent = ev || event
+                       var left = oevent.clientX - distanceX
+                       var top = oevent.clientY - distanceY
+                       if(left >= 0 && left <= 500 && top >= 0 && top <= 500){
+                　　　　　　a[i].style.left = left + 'px'
+                　　　　　　a[i].style.top = top + 'px' 
+                       }
+            　　　　}
+            　　　　document.onmouseup = function(){
+            　　　　　　document.onmousemove = null
+            　　　　　　document.onmouseup = null
+            　　　　}
+            　　}
+            }
+
+            var txt = new Date();
+            console.log(txt.getTime())
+        }
+</script>
+</html>

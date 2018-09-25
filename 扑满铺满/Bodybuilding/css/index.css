@@ -1,0 +1,102 @@
+*{
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select:none;
+}
+
+#app{
+    width: 100%; min-height: 100vh; color: white; font-size: 0.3rem;
+}
+
+.main{
+    width: 100%; min-height: 100vh; position: relative; padding-top: 3.5rem;
+    background: url('../img/bac.png') no-repeat; background-size: 100% 100%;
+}
+.More{
+    width: 2.04rem; position: absolute; top: 0.52rem; right: 0; text-align: center; font-size: 0.24rem; font-family:PingFang-SC-Regular; font-weight: Regular;
+}
+.Mores{
+    width: 1.28rem; height: 1.28rem; margin: 0 auto;
+    background: url('../img/More.png') no-repeat; background-size: 100% 100%;
+    -webkit-animation:dong 1s linear 0s infinite alternate;
+    animation:dong 1s linear 0s infinite alternate;
+}
+@keyframes dong{
+	from{
+        transform: scale(0.1);
+	}
+	to{
+        transform: scale(1);
+	}
+	}
+@-webkit-keyframes dong{
+	from{
+        transform: scale(0.1);
+	}
+	to{
+        transform: scale(1);
+	}
+}
+
+.Bodybuilding{
+    width: calc(100% - 1.2rem); height: 3.12rem; margin: 0 auto;
+    background: url('../img/Bodybuilding.png') no-repeat; background-size: 100% 100%;
+}
+
+.text{
+    width: 100%; height: 1.16rem; line-height: 0.44rem; font-family:PingFang-SC-Medium; font-weight: Medium; text-align: center; margin-top: 2rem;
+}
+
+.next{
+    width: 0.91rem; height: 1.07rem; margin: 0 auto; position: relative;
+    background: url('../img/next.png') no-repeat; background-size: 100% 100%;
+    -webkit-animation:dong 1s linear 0s infinite alternate;
+    animation:dong 1s linear 0s infinite alternate;
+}
+
+
+
+.qrcode{
+    width: 100%; height: 100vh; position: absolute; top: 0; left: 0; font-size: 0.3rem; font-family:PingFang-SC-Regular; font-weight: Regular;
+    background: url('../img/opbac.png') no-repeat; background-size: 100% 100%; text-align: center; color:rgba(26,26,26,1);
+}
+.qrcode section{
+    width: 6.03rem; height: 6.43rem; background-color: white; border-radius: 0.2rem; margin: calc(50vh - 3.215rem) auto; padding-top: 0.5rem;
+}
+.qrcode section img{
+    width: 4rem; height: 4rem; margin-top: 0.5rem;
+}
+.codes{
+     margin-top: -2rem!important; opacity: 0;
+}
+
+
+
+
+
+.footer{
+    width: 100%; height: 15.38rem; text-align: center; padding-top: 1.8rem; font-family:PingFang-SC-Regular; font-weight: Regular;
+    background: url('../img/bacs.png') no-repeat; background-size: 100% 100%; font-size: 0.3rem;
+}
+.go{
+    width: 0.5rem; height: 0.5rem; position: fixed; top: 0.5rem; left: 0.5rem;
+    background: url('../img/go.png') no-repeat; background-size: 100% 100%;
+}
+.today{
+    width: 2.45rem; height: 3.05rem; margin: 0.68rem auto;
+    background: url('../img/today.png') no-repeat; background-size: 100% 100%;
+}
+.slogan p:nth-child(1){
+    margin-bottom: 0.3rem; text-decoration: underline;
+}
+.slogan p:nth-child(5){
+    margin-top: 1.27rem; 
+}
+.logo{
+    width: 100%; height: 1.2rem; margin-top: 0.48rem; display: flex; justify-content: space-around; padding: 0 1rem;
+}
+.logo img{
+    width: 1.2rem; height: 100%;
+}

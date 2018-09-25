@@ -1,0 +1,69 @@
+        *{
+            padding: 0; margin: 0;
+        }
+        body{
+            width: 100%; height: 100%; font-size: 4.5vw;
+        }
+        #app{
+            width: 100vw; height: 100%; font-size: 4vw; overflow: hidden;
+        }
+        header{
+            width: 100%; height: 14vw; color: white; font-size: 4.5vw; margin-top: -5.5vw;
+            background-color: black; line-height: 14vw; padding-left: 5vw;
+        }
+        #fan{
+            float: left; position: relative; top: 5vw; font-size: 10vw; position: relative; top: 2vw;
+        }
+        h3{
+            position: relative; left: 25vw; top: 3.5vw;
+        }
+        
+        .shuru{
+            width: 100%; padding-top: 8vw;
+        }
+        .shuru>div{
+            font-size: 4.3vw; line-height: 6vw; border-bottom: 0.3vw solid black; padding-bottom: 3vw; width: 90vw; margin: 0 auto;
+        }
+        #huoqu{
+            width: 30vw; height: 10vw; line-height: 8vw; border: 0.3vw solid gray; color: gray; font-size: 4vw; position: relative; right: -10vw; font-size: 4.3vw;
+            background-color: white;outline: none!important; 
+        }
+        input{
+            /*border: 1px solid red!important; */
+            line-height: 9vw; outline: none!important;
+        }
+        #phone,#name{
+            margin-left: 3vw; width: 59.5vw; height: 9vw; color: gray; border: none;
+        }
+        #codes{
+            margin-left: 3vw; width: 30vw; height: 9vw; color: gray; border: none;
+        }
+        input:-moz-placeholder{
+            font-weight: 500!important; font-size: 4vw;
+        }
+        ::-webkit-input-placeholder{
+            font-weight: 500!important; font-size: 4vw;
+        }
+        #quer{
+            width: 90vw; height: 13vw!important; color: white; background-color: red; height: 11vw; border: none!important; font-size: 4.8vw;
+            outline: none!important;
+        }
+        .anniu{
+            margin-top: 15vw; text-align: center;
+        }
+        .blu{
+            color: #2054b7!important; border: 0.3vw solid #2054b7!important;
+        }
+
+        #myModal{
+            margin-top: 35vh; width: 90%; margin-left: 5%;
+        }
+        .modal-bodys{
+            margin: 0;
+        }
+        .modal-bodys{
+            font-weight: 600; height: 15vw; font-size: 5vw; text-align: center; line-height: 15vw;
+        }
+        .modal-body{
+            letter-spacing: 0.3vw;
+        }

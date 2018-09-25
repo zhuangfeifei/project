@@ -1,0 +1,87 @@
+*{
+    margin: 0; padding: 0;
+}
+body{
+    width: 100%; padding-top: 13.3vw;
+}
+header{
+    width: 100%; height: 13.3vw; display: none; position: fixed; top: 0; left: 0; z-index: 10; background-color: white;
+    ul{
+        width: 100%; display: flex; justify-content: space-around;
+        li{
+            list-style: none; line-height: 13vw; color: black;
+            display: inline-block; width: 20%; text-align: center; font-size: 4.3vw;
+        }
+    }
+}
+.active{
+    border-bottom: 0.7vw solid #04BE02;
+    color: #04BE02;
+}
+#content{
+    width: 100%;
+    .text{
+        display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
+    }
+    .content_list{
+        width: 100%; margin-bottom: 2vw;
+        div:nth-child(1){
+            width: 100%; height: 25vh; position: relative;
+            img{
+                width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            }
+            div{
+                width: 100%; height: 9vh; position: absolute; bottom: 0; left: 0; font-size: 3.8vw;
+                color: white; line-height: 4vh; box-sizing: border-box; padding: 0 5vw;
+                p:nth-child(1){
+                    font-size: 4.5vw; font-weight: 600;
+                }
+                p{
+                    .text
+                }
+            }
+        }
+        div:nth-child(2),div:nth-child(3){
+            width: 90%; height: 17vh; border-bottom: 1px solid gainsboro; margin: 0 auto;
+            div:nth-child(1){
+                width: 30vw; height: 15vh; margin: 1vh 0; float: left;
+                img{
+                    width: 100%; height: 100%;
+                }
+            }
+            div:nth-child(2){
+                width: 55vw; height: 15vh; float: right; border: 0!important;
+                div:nth-child(1){
+                    width: 100%; height: 4vh; line-height: 4vh; .text; font-weight: 600;
+                    font-size: 4.5vw; margin-top: 2vw;
+                }
+                div:nth-child(2){
+                    width: 100%; height: 6vh; line-height: 3vh; .text; -webkit-line-clamp: 2;
+                    font-size: 3.5vw;
+                }
+                div:nth-child(3){
+                    width: 100%; height: 4vh; line-height: 4vh; border: 0!important;font-size: 3.5vw;
+                    span{
+                        float: right;
+                    }
+                    span:nth-child(1){
+                        float: left; color: gray;
+                    }
+                    img{
+                        width: 7vw; height: 5.5vw; float: right; position: relative; top: 2vw; margin: 0 1vw;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.login{
+    width: 100%; height: 10vw; line-height: 10vw; text-align: center; color: gray; font-size: 3.5vw;
+    img{
+        width: 6vw; height: 6vw; display: none;
+    }
+    p{
+        display: none; position: relative; top: -2vw;
+    }
+}

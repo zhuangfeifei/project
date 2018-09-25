@@ -1,0 +1,133 @@
+*{
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+#app{
+    width: 100%; height: 100vh; font-size: 4vw; background: url("../img/1.png") no-repeat; background-size: 100% 100%;
+    background-color: #4b95f2; padding-top: 3vw; position: relative; overflow: hidden;
+}
+section{
+    width: 25vw; height: 6vh; background: url("../img/矢量智能对象拷贝23x.png") no-repeat; background-size: 100% 100%; margin: 0 auto;
+}
+
+
+.content{
+    width: 100%; 
+}
+
+/*img{pointer-events: none;}*/
+
+nav{
+    width: 90%; height: 32vh; background: url("../img/zhoujielun2x.png") no-repeat; background-size: 100% 100%; margin: 0 auto; margin-top: -4vh;
+    position: relative;
+}
+nav img:nth-child(1){
+    width: 7.5vw; height: 7vh; position: absolute; top: 9vh; right: -2vw;
+}
+nav img:nth-child(2){
+    width: 6vw; height: 5.5vh; position: absolute; bottom: 0; left: 0; z-index: 5;
+}
+nav img:nth-child(3){
+    width: 100%; height: 12.5vh; position: absolute; bottom: -1vh; left: 0;
+}
+
+
+.main{
+    width: 80%; height: 50vh; margin: 7vh auto; text-align: center; z-index: 6;
+}
+.main img{
+    width: 100%; height: 27vh;
+}
+.main div{
+    width: 75%; height: 12vh; margin-top: 7vh; margin-left: 12.5%;
+    background: url("../img/组412x.png") no-repeat; background-size: 100% 100%;
+}
+
+.subject{
+    width:90%; height: 60vh; margin: 2vh auto; background: url("../img/3.png") no-repeat; background-size: 100% 100%;
+    padding: 7vw 10vw; font-family:HYLeMiaoTiW; color:rgba(51,51,51,1); position: relative;
+}
+.subject h3{
+     font-size: 4.5vw; font-weight: bold; margin-bottom: 3vw;
+}
+.subject p{
+    line-height: 6vh; font-size: 4.3vw;
+}
+.list_img{
+    width: 3.5vw; height: 3.5vw; margin-right: 3vw;
+}
+.next{
+    width: 100%; height: 10vh; display: flex; justify-content: space-around; position: absolute; bottom: 5vh; left: 0; padding: 0 7vw;
+}
+.Last{
+    width: 40%; height: 8vh; background: url("../img/13x.png") no-repeat; background-size: 100% 100%;
+}
+.Next{
+    width: 40%; height: 8vh; background: url("../img/3x.png") no-repeat; background-size: 100% 100%;
+}
+.Hand_over{
+    width: 40%; height: 8vh; background: url("../img/组52x.png") no-repeat; background-size: 100% 100%;
+}
+
+
+
+.ye1{
+    width: 6vw; height: 5.5vh; position: absolute; bottom: 20vh; right: 2vw;
+}
+.ye2{
+    width: 7.5vw; height: 7vh; position: absolute; bottom: 5.5vh; left: 2vw;
+}
+.ye3{
+    width: 25vw; height: 6vh; position: absolute; bottom: 2vh; right: 3vw;
+}
+
+
+
+
+.Result{
+    width: 100%;
+}
+.Fraction{
+    width: 100%; text-align: center; position: relative;
+}
+.Fraction img:nth-child(1){
+    width: 90%; height: 12.5vh;
+}
+.Fraction img:nth-child(2){
+    width: 92%; height: 41vh;
+}
+.again{
+    width: 95%; display: flex; justify-content: space-around;
+    position: absolute; top: -6vh; left: 2.5%
+}
+.again img{ 
+    width: 40%; height: 8vh;
+}
+.bottom{
+    width: 100%; height: 38vh; position: absolute; bottom: -7.5vh; left: 0;
+}
+.bottom .bottom_img{
+    width: 100%; height: 100%;
+}
+
+.Fraction_content{
+    position: absolute; top: 15vh; right: 20vw; font-size: 17vw; font-family:HYLeMiaoTiW; color:rgba(51,51,51,1); font-weight: bold;
+    color: transparent; 
+    -webkit-text-stroke: 1.5vw #ffec00;
+     -webkit-text-shadow: 0px 0px 0px rgba(51,51,51,1);
+    text-shadow: 0px 0px 0px rgba(51,51,51,1);
+}
+.level{
+    position: absolute;  top: 34vh; right: 25vw; font-size: 10vw; font-family:HYLeMiaoTiW; color:rgba(51,51,51,1); font-weight: bold;
+    color: transparent; 
+    -webkit-text-stroke: 1vw #ffec00;
+    -webkit-text-shadow: 0px 0px 0px rgba(51,51,51,1);
+    text-shadow: 0px 0px 0px rgba(51,51,51,1);
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+}
+
+
+
+.share{
+    width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+}

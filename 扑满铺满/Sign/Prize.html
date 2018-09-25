@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>厚木资产2018活动2</title>
+    <link rel="stylesheet" href="https://unpkg.com/vant/lib/vant-css/index.css">
+    <link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.css">
+    <script src="./js/jquery.min.js"></script>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        *{
+            padding: 0; margin: 0;
+        }
+        body{
+            width: 100%; height: 100%; 
+        }
+        #app{
+            width: 100%; height: 100%; font-size: 4vw;
+        }
+
+        .qiandaos{
+            width: 80%; height: 25vh; text-align: center; margin-top: -5vh; padding: 2vw 3vw;
+        }
+        .qiandaos>div>p{
+            margin-top: 2vw;
+        }
+        .qiandaos>div>p:nth-child(2){
+            color: red; font-size: 5.5vw;
+        }
+        .cha{
+            position: relative; top: 6.5vh; width: 8vw; height: 15vw; 
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <van-popup v-cloak class="qiandaos" v-model="show" :close-on-click-overlay="false">
+            <div>
+                <p>恭喜中得</p>
+                <p>满120减100卷</p>
+                <p>请至扑满铺满微信公众号【我的商城】查看使用</p>
+            </div>
+            <img class="cha" @click="guanbi" src="./img/叉叉@2x.png" alt="">
+        </van-popup>
+    </div>
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vant/lib/vant.min.js"></script>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+            return{
+                show:false,
+            }
+        },
+        created(){
+            document.body.scrollTop = 0
+            document.documentElement.scrollTop = 0
+
+            this.show = true
+
+            function GetRequest() {  
+                var url = location.search; //获取url中"?"符后的字串,如"?p=1"  
+                var theRequest = new Object();  
+                if (url.indexOf("?") != -1) {  
+                    var str = url.substr(1);  
+                    strs = str.split("&");  
+                    for(var i = 0; i < strs.length; i ++) {  
+                        theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);  
+                    }  
+                }  
+                return theRequest;  
+            }  
+        },
+        methods:{
+            guanbi(){
+                window.location.href = "/"
+            }
+        }
+    })
+
+
+
+
+
+
+    // 设置HTML字体    rem
+        function fontSize() {
+            var deviceWidth = document.documentElement.clientWidth;
+            if (deviceWidth > 600) {
+                deviceWidth = 600;
+            }
+            document.documentElement.style.fontSize = deviceWidth / 100 + 'px'
+        }
+        fontSize()
+        window.onresize = function () {
+            fontSize()
+        }
+</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./animate1.css">
+    <style>
+        *{
+            margin: 0; padding: 0;
+        }
+        .shouye{
+            width: 100%; height: 101vh;
+        }
+        .shouye>section:nth-child(1){
+            width: 100%; height: 23vh; position: relative; text-align: center;
+        }
+        .img1{
+            width: 10vw; height: 8vw; position: absolute; bottom: 12.5vw; left: 45vw;
+        }
+        .img2{
+            width: 3vw; height: 0.5vw; position: absolute; bottom: 11vw; left: 48.5vw;
+        }
+        .shouye span{
+            position: absolute; bottom: 3vw; left: 44.5vw; font-size: 6vw; color: #005674;
+        }
+        .shouye>section:nth-child(2){
+            width: 100%; height: 60vh; text-align: center;
+        }
+        .shouye>section:nth-child(2) img{
+            width: 99%; height: 100%; position: relative; left: -1%;
+        }
+        .shouye>section:nth-child(2) div{
+            position: relative; top: -5vh; font-size: 4.5vw; letter-spacing: 0.5vw;
+        }
+        .shouye>section:nth-child(3){
+            width: 100%; height: 17vh; text-align: center;
+        }
+        .shouye>section:nth-child(3) img{
+            width: 10%; height: 20%; position: relative; top: 7vh;
+        }
+
+        .hui{
+            width: 10%; height: 15%; position: relative; top: 4vh;
+        }
+</style>
+</head>
+<body>
+    <div class="shouye">
+        <section class="asd">
+            <img id="huis" class="a-swing hui" src="./img/矩形1拷贝@2x.png" alt="">
+            <img class="img1 a-bounce" src="./img/04@2x.png" alt="">
+            <img class="img2 a-bounce" src="./img/矩形4@2x.png" alt="">
+            <span class="a-bounce">签约</span>
+        </section>
+        <section>
+            <img class="a-fadeinL" src="./img/qianyue@2x.png" alt="">
+            <div class="a-bounceinB">内容在原来的V1.0的基础上<br>新增在在线签约功能</div>
+        </section>
+        <section>
+            <img id="hui" class="a-swing" src="./img/矩形1@2x.png" alt="">
+        </section>
+    </div>
+</body>
+<script src="./jquery.min.js"></script>
+<script>
+    $(window).scroll(function(){ 
+            //下面这句主要是获取网页的总高度，主要是考虑兼容性所以把Ie支持的documentElement也写了，这个方法至少支持IE8 
+            var htmlHeight = document.body.scrollHeight||document.documentElement.scrollHeight; 
+            //clientHeight是网页在浏览器中的可视高度， 
+            var clientHeight = document.body.clientHeight||document.documentElement.clientHeight; 
+            //scrollTop是浏览器滚动条的top位置， 
+            var scrollTop = document.body.scrollTop||document.documentElement.scrollTop; 
+            //通过判断滚动条的top位置与可视网页之和与整个网页的高度是否相等来决定是否加载内容； 
+            if(scrollTop+clientHeight > htmlHeight){ 
+                setTimeout(()=>{
+                    self.location='./5.html'
+                },500) 
+            } 
+            if(scrollTop == 0){ 
+                self.location='./3.html' 
+            } 
+    })
+    $(document).ready(function(){
+        $('#hui').click(function(){
+            self.location='./5.html'
+        })
+        $('#huis').click(function(){
+            self.location='./3.html'
+        })
+    })
+</script>
+</html>

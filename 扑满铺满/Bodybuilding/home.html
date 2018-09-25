@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"  http-equiv="Access-Control-Allow-Origin" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>全民健身日</title>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/jweixin-1.2.0.js"></script>
+    <link rel="stylesheet" href="./css/home.css">
+</head>
+<body>
+    <div id="app">
+        <div v-if="show" class="main">
+            <div class="go" v-on:click="go"></div>
+            <div class="Explain">
+                <h3>游戏说明</h3>
+                <ol>
+                    <li>玩家通过点击“开始游戏”开始通过点击屏幕来完成跳跃动作</li>
+                    <li>游戏分数越高则排名越靠前</li>
+                    <li>每天每位玩家拥有三次免费机会</li>
+                    <li>每日可以通过分享获得额外游戏机会</li>
+                    <li>活动结束时，排行榜第一名将获得方圆里英派斯年卡一张；游戏结束时，每位用户可以关注苏州方圆里公众号，领取英派斯次卡一张</li>
+                    <li>获得更佳体验，请至微信-通用-开启横屏，并开启系统自动横屏</li>
+                    <li>方圆里拥有本次活动最终解释权</li>
+                </ol>
+            </div>
+            <div class="change">
+                <div class="Ranking" v-on:click="rankings">排行榜</div>
+                <div class="start" v-on:click="starts">开始游戏</div>
+                <p v-on:click="iSshares">点击分享</p>
+                <p>Tip：获得更佳体验，请至微信-通用-开启横屏</p>
+                <p>开启系统自动横屏</p>
+            </div>
+        </div>
+
+        <div v-else class="Rankings">
+            <div class="go" v-on:click="gos"></div>
+            <div class="branch">
+                <h2>{{Fraction || myFraction}}</h2>
+                <p>分</p>
+                <div class="start" v-on:click="starts">再来一次</div>
+                <div class="share" v-on:click="iSshares">点击分享</div>
+            </div>
+            <div class="scrolls">
+                <div class="list">
+                    <div class="Rankings_list" v-for="(item,index) in data" :class="{active:openIds == item.open_id}" :key="index">
+                        <div v-if="index == 0"><img src="./img/1.png" alt=""></div>
+                        <div v-if="index == 1"><img src="./img/2.png" alt=""></div>
+                        <div v-if="index == 2"><img src="./img/3.png" alt=""></div>
+                        <div v-if="index > 2">{{index+1}}</div>
+                        <div><img :src="item.head_img_url ? item.head_img_url : './img/1.png'" alt=""><span>{{item.nick_name}}</span></div>
+                        <div>{{item.score}} 分</div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="iSshare" v-on:click="iSshare" v-show="ISshare"></div>
+        <div class="iSshares" v-on:click="iSshares" v-show="ISshares"></div>
+    </div>
+</body>
+<script>
+    
+ 
+    // var wxhs = '${wxh}'
+    //  var openIds = '${openId}'
+    //  var STATUS = '${STATUS}'
+    //  var Fraction = '${Fraction}'
+    var wxhs = 'puman_houmu'
+     var openIds = 'oyulg05XM7CHaRUt9JlarBuSwAIU'
+     var STATUS = '1'
+     var Fraction = '71'
+    const isDev = false
+    const URLS = isDev ? 'http://192.168.1.193:8090' : 'http://www.homeamc.cn'
+    let imgUrl = URLS + '/shopping/kaptcha/'
+
+
+    const vm = new Vue({
+        el: '#app',
+        data:{
+            show: true, isStart: false, data:'', Fraction: 0, myFraction: 0,
+            ISshare:false,   // 分享
+            ISshares:false,   // 分享
+        },
+        computed: {
+            
+        },
+        created(){
+            if(Fraction != '') {
+                $.ajax({
+                    url: URLS +  '/shopping/fitActivi/gameOver',
+                    type: 'post',
+                    data:{ wxh: wxhs, openId: openIds, score: Fraction },
+                    dataType: 'json',
+                    success: (res) =>{
+                        console.log(res)
+                        if(res.code == 200) {
+                            this.rankings()
+                            this.Fraction = Fraction
+                        }
+                    }
+                })
+            }
+            this.share()
+        },
+        methods:{
+            go(){
+                window.history.go(-1)
+            },
+            gos(){
+                this.show = !this.show
+            },
+            starts(){
+                console.log('135132')
+                this.resultJudgment()
+            },
+            iSshare(){
+                this.ISshare = !this.ISshare
+            },
+            iSshares(){
+                this.ISshares = !this.ISshares
+            },
+            resultJudgment(){   //判断每日三次机会是否已完结
+                $.ajax({   
+                    url: URLS +  '/shopping/fitActivi/resultJudgment',
+                    type: 'post',
+                    data:{ openId: openIds},
+                    dataType: 'json',
+                    success: (res) =>{
+                        // console.log(res)
+                        if(res.code == 200) {
+                        	if(STATUS == '1') window.location.href = './games/index.html?wxh='+wxhs+'&openId='+ openIds+'&STATUS='+STATUS
+                        }else{
+                        	this.ISshare = !this.ISshare
+                        }
+                    }
+                })
+            },
+            rankings(){
+                $.ajax({
+                    url: URLS +  '/shopping/fitActivi/rankings',
+                    type: 'post',
+                    data:{ openId: openIds},
+                    dataType: 'json',
+                    success: (res) =>{
+                        // console.log(res)
+                        if(res.code == 200) {
+                            this.show = !this.show
+                            console.log(this.show)
+                            this.data = res.data
+                            for(var i = 0; i < res.data.length; i ++){
+                                if(res.data[i].open_id == openIds) this.myFraction = res.data[i].score
+                            }
+                        }
+                    }
+                })
+            },
+            share(){  // 分享
+                $.ajax({
+                    url: URLS + '/shopping/fitActivi/shireHome',
+                    type: 'post',
+                    data: { wxh : wxhs, openId: openIds,STATUS:STATUS,Fraction:Fraction },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            this.wxs(res)
+                        }
+                    }
+                })
+            },
+            wxs(res){
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: res.data.appId, // 必填，公众号的唯一标识
+                    timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: res.data.nonce, // 必填，生成签名的随机串
+                    signature: res.data.signature,// 必填，签名
+                    jsApiList: ['onMenuShareAppMessage', 'onMenuShareTimeline'] // 必填，需要使用的JS接口列表
+                })
+                wx.ready(() => {
+                    wx.onMenuShareAppMessage({
+                        title: '全民健身日', // 分享标题
+                        desc: '动动手指，来赢取方圆里英派斯年卡吧!', // 分享描述
+                        link: 'http://www.homeamc.cn/shopping/fit/seminar?wxh=' + wxhs, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'http://www.homeamc.cn/shopping/static/img/fit.png', // 分享图标
+                        type: '', // 分享类型,music、video或link，不填默认为link
+                        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                        success: (res)=> {
+                            // console.log(res)
+                            this.updateRecords()
+                        },
+                        fail: function (res) {
+                            // console.log(res)
+                        }
+                    })
+                    wx.onMenuShareTimeline({
+                        title: '全民健身日', // 分享标题
+                        link: 'http://www.homeamc.cn/shopping/fit/seminar?wxh=' + wxhs, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: 'http://www.homeamc.cn/shopping/static/img/fit.png', // 分享图标
+                        success: (res)=> {
+                            // console.log(res)
+                            this.updateRecords()
+                        },
+                        fail: function (res) {
+                            // console.log(res)
+                        }
+                    })
+                })
+            },
+            updateRecords(){  // 分享
+                $.ajax({
+                    url: URLS + '/shopping/fitActivi/updateRecords',
+                    type: 'post',
+                    data: { openId: openIds },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200) {
+                            
+                        }
+                    }
+                })
+            },
+        }
+    })
+
+
+    $(document).ready(function(){
+        (function () {
+            var deviceWidth = document.documentElement.clientWidth
+            if (deviceWidth > 640) deviceWidth = 640
+            document.documentElement.style.fontSize = deviceWidth / (750 / 100) + 'px'   // 750 设计图大小  100 换算rem
+        })()
+    })
+</script>
+</html>

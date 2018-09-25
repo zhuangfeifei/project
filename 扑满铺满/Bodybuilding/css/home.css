@@ -1,0 +1,108 @@
+*{
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select:none;
+}
+
+#app{
+    width: 100%; min-height: 100vh; color: white; font-size: 0.3rem; position: fixed; top: 0; left: 0;
+    background: url('../img/back.png') no-repeat; background-size: 100% 100%;
+}
+
+.go{
+    width: 0.5rem; height: 0.5rem; position: fixed; top: 0.3rem; left: 0.1rem;
+    background: url('../img/go.png') no-repeat; background-size: 100% 100%;
+}
+
+.main{
+    width: 100%; min-height: 100vh; padding-top: 0.53rem;
+}
+.Explain{
+    width: 6.3rem; height: 6.6rem; background:rgba(255,255,255,0.2); border-radius: 0.2rem; margin: 0 auto; 
+    padding: 0.3rem 0.3rem 0.47rem 0.73rem; font-family:PingFang-SC-Regular; font-weight: Regular;
+}
+.Explain h3{ 
+    font-size: 0.36rem; text-align: center;  margin-bottom: 0.1rem; font-family: PingFang-SC-Medium; font-weight: Medium;
+}
+.Explain li:nth-child(6){
+    color:#fedf66;
+}
+.change{
+    width: 6.3rem; height: 3rem; margin: 0 auto; text-align: center; line-height: 0.96rem; color: rgba(0,65,102,1);
+    font-family:PingFang-SC-Bold; font-weight: Bold; font-size: 0.36rem; margin-top: 0.65rem;
+}
+.Ranking{
+    width: 3rem; height: 0.96rem; float: left;
+    background: url('../img/start.png') no-repeat; background-size: 100% 100%;
+}
+.start{
+    width: 3rem; height: 0.96rem; float: right;
+    background: url('../img/start.png') no-repeat; background-size: 100% 100%;
+}
+.change p:nth-child(3){
+    margin-top: 0.53rem; color: white; text-decoration: underline;
+}
+.change p:nth-child(4),.change p:nth-child(5){
+    font-size: 0.28rem; font-family:PingFang-SC-Regular; font-weight: Regular; color:#fedf66; line-height: 0.4rem;
+}
+
+.Rankings{
+    width: 100%; min-height: 100vh; padding-top: 0.64rem; padding-bottom: 0.3rem;
+}
+.branch{
+    width: 100%; height: 3rem; text-align: center; font-family:PingFang-SC-Regular; font-weight: Regular; padding: 0 1.25rem;
+}
+.branch h2{
+    font-size: 1rem; font-family:PingFang-SC-Bold; font-weight: Bold; 
+}
+.branch .share{
+    width: 2rem; height: 0.64rem; float: left; color: rgba(0,65,102,1); line-height: 0.64rem; margin-top: 0.4rem;
+    background: url('../img/start.png') no-repeat; background-size: 100% 100%; font-family:PingFang-SC-Bold; font-weight: Bold;
+}
+.branch .start{
+    width: 2rem; height: 0.64rem; float: right; color: rgba(0,65,102,1); line-height: 0.64rem; margin-top: 0.4rem;
+    background: url('../img/start.png') no-repeat; background-size: 100% 100%; font-family:PingFang-SC-Bold; font-weight: Bold;
+}
+
+.scrolls{
+    width: 6.3rem; height: 7rem; margin: 0 auto; background:rgba(255,255,255,0.2); border-radius: 0.2rem; box-shadow:0px 0px 20px rgba(0,0,0,0.16);
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.list{
+    width: 100%; height: 100%; padding: 0.2rem 0;
+}
+.Rankings_list{
+    width: 100%; height: 0.8rem; margin-top: 0.1rem; line-height: 0.8rem; border-radius: 0.4rem; padding: 0 0.3rem;
+}
+.Rankings_list div:nth-child(1){
+     width: 0.48rem; height: 100%; text-align: center; font-family:PingFang-SC-Medium; font-weight: Medium; font-size: 0.48rem; float: left;
+}
+.Rankings_list div:nth-child(1) img{
+    width: 0.48rem; height: 0.48rem; position: relative; top: 0.07rem;
+}
+.Rankings_list div:nth-child(2){
+    width: 56%; display: flex; white-space: nowrap; float: left; margin-left: 0.7rem; overflow: hidden;
+}
+.Rankings_list div:nth-child(2) img{
+    width: 0.58rem; height: 0.58rem; border-radius: 50%; margin-right: 0.3rem; position: relative; top: 0.1rem;
+}
+.Rankings_list div:nth-child(3){
+    font-size: 0.36rem; color: rgba(254,223,102,1); float: right;
+}
+.active{
+    background-color: #826786;
+}
+
+
+
+
+.iSshare{
+    width: 100%; height: 100vh; position: absolute; top: 0; left: 0; z-index: 100;
+    background: url('../img/Draw.png') no-repeat; background-size: 100% 100%;
+}
+.iSshares{
+    width: 100%; height: 100vh; position: absolute; top: 0; left: 0; z-index: 100;
+    background: url('../img/Draws.png') no-repeat; background-size: 100% 100%;
+}

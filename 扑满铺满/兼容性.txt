@@ -1,0 +1,141 @@
+<meta name="viewport" content="width=320,maximum-scale=1.3,user-scalable=no">
+苹果6
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="author" content="刘亚彬">
+		<title>动画版轮播图</title>
+		<style>
+			*{margin: 0;padding: 0;}
+			#carousel{width: 500px;height: 300px; text-align: center;
+			 border: 10px solid black; overflow: hidden;
+			 position: relative; margin: 50px auto;}
+			img{width: 300px;height: 200px;
+			 position: absolute; top: 50px;
+			 transition: left 1s ease-in-out}
+			ul{list-style-type: none; width: 100%;
+			 text-align: center; position: absolute;
+			 bottom: 20px;}
+			li{width: 10px;height: 10px;
+			 border: 2px solid white;
+			 border-radius: 50%; 
+			 display: inline-block;
+			 margin: 5px;}
+			 li.on{background-color: white;}
+			 a{position: relative; z-index: 1;}
+		</style>
+	</head>
+	<body>
+		<div id="carousel">
+			<img src="4.jpg" alt="" />
+			<img id="imgs" src="1.jpg" alt="" />
+			<img src="2.jpg" alt="" />
+			<img src="2.jpg" alt="" />
+			<img src="2.jpg" alt="" />
+			<img src="3.jpg" alt="" />
+			<img src="4.jpg" alt="" />
+			<img src="1.jpg" alt="" />
+			<!--<ul id="pageControl">
+				<li class="on"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>-->
+			<a id="prev" href="#">上一张</a>
+			<a id="next" href="#">下一张</a>
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+		var carousel = document.getElementById("carousel")
+		var imgs = document.getElementsByTagName('img')
+	 	// var lis = document.getElementsByTagName('li')
+	 	var timer 
+	 	var count = 0 // 标记当前显示的图片的索引
+		
+		// 获取轮播图组件(div)的内宽度
+		var width = carousel.clientWidth; 
+		// 排列图片的初始位置
+		for(var i = 0 ; i < imgs.length; i++){
+			imgs[i].style.left = i * 330 - 230 + 'px '
+			imgs[i].style.height = 200+'px'
+			imgs[i].style.top = 50+'px'
+		}
+		// imgs[1].style.height = 300+'px'
+		// 	imgs[1].style.top = 0+'px'
+
+		// 自动轮播
+		function autoPlay(){
+			// 取消当前的小白点
+			// lis[count].className = ''
+			// 增加当前显示图片的索引
+			count ++
+			// if(count<7){
+				// imgs[count].style.height = 300+'px'
+				// imgs[count].style.top = 0+'px'
+			// }
+			// 根据当前的索引,重新设置每一张图片的位置
+			for(var i = 0 ; i < imgs.length; i++){
+				imgs[i].style.left = (i-count) * 330 + 100 + 'px '
+			}
+			if(count == 6){
+				// 如果显示到了第五涨图片,就返回第一张
+				count = 0;
+				
+				// 第五张图片和第一张图片是相同的,所以在第四张到第五张图片切换的过渡动画结束之后,下一次过渡动画开始之前,(中间停留一秒)瞬间把所有的图片位置还原,做到神不知鬼不觉
+				// 执行到这一句时,过渡动画刚开始,所以要加一个延时器,等到动画结束之后再还原图片的位置
+				setTimeout(function(){
+					
+					for(var i = 0 ; i < imgs.length; i++){
+						// 1,取消过渡动画效果
+						imgs[i].style.transition = 'none'
+						// 2,在中间停留这一秒时间内,还原所有图片的位置
+	// 在js执行这句代码之后,数据会立即改变,但数据的改变只是在内存中发生的,并不会直接渲染到页面上,而是会在页面下一次重绘/渲染时显示数据的改变,
+						imgs[i].style.left = i * 330-230 + 'px '
+					}
+	// 添加过渡动画时,要注意延时几毫秒之后再添加,如果不加延时,那么数据改变之后,下一次页面重绘之前,就会把过渡动画重新添加上去,导致的结果是,页面重绘时要显示新的数据改变会监听到img仍然有过渡效果,仍然会执行过渡效果, 所以我们要再加一个延时,保证页面重绘之后(已经刷新了img的位置)再添加过渡效果
+					setTimeout(function(){
+						// 3,图片位置还原之后,再把过渡动画加上
+						for(var i = 0 ; i < imgs.length; i++){
+							imgs[i].style.transition = 'left 1s ease-in-out'
+						}
+					},20)//延时时间范围(十几ms,889)
+					
+				},1111) //延时的时间范围(1000,2000)
+				
+			}
+			// 小白点加上
+			// lis[count].className = 'on'
+			// setTimeout(()=>{
+				
+			// 	if(count == 6){
+			// 		imgs[0].style.height = 200+'px'
+			// 		imgs[0].style.top = 50+'px'
+			// 	}else{
+			// 		imgs[count-1].style.height = 200+'px'
+			// 	imgs[count-1].style.top = 50+'px'
+			// 	}
+				
+			// },2000)
+			// imgs[5].style.height = 200+'px'
+			// 	imgs[5].style.top = 50+'px'
+			// console.log(count)
+		}
+		timer = setInterval(autoPlay,2000)
+	</script>
+</html>

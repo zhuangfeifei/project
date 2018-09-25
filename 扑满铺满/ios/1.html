@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./animate1.css">
+    <style>
+        *{
+            margin: 0; padding: 0;
+        }
+        .shouye{
+            width: 100%; height: 101vh; background: url('./img/beijing@2x.png') no-repeat; background-size: 100% 100%;
+            color: white;
+        }
+        .shouye>section:nth-child(1){
+            width: 100%; height: 20vh; position: relative; text-align: center;
+        }
+        .shouye span{
+            position: absolute; bottom: 5vw; left: 18vw; font-size: 7vw;  font-family: 站酷快乐体2016修订版;
+        }
+        .shouye>section:nth-child(2){
+            width: 100%; height: 60vh; text-align: center; position: relative;
+        }
+        .shouye>section:nth-child(2) img{
+            width: 37%; height: 37%; position: relative; top: 3vh;
+        }
+        .shouye>section:nth-child(2) p{
+            position: relative; top: 1vh; text-align: center; font-size: 4.5vw;
+        }
+        .shouye>section:nth-child(2) div{
+            width: 80%; position: absolute; bottom: 0; left: 10%; font-size: 4.5vw; letter-spacing: 0.5vw;
+            text-align: left; line-height: 7vw;
+        }
+        .shouye>section:nth-child(3){
+            width: 100%; height: 20vh; text-align: center;
+        }
+        .shouye>section:nth-child(3) img{
+            width: 10%; height: 20%; position: relative; top: 7vh;
+        }
+</style>
+</head>
+<body>
+    <div class="shouye">
+        <section>
+            <span class="a-bounce">扑满V2.0正式上线啦！</span>
+        </section>
+        <section>
+            <img class="a-rotateinRT" src="./img/1024px_icon@2x.png" alt="">
+            <p class="a-bounceinL">扑满V2.0</p>
+            <div class="a-bounceinB">
+                为了更好地应对移动互联网对传统商业地产行业的冲击，同时也为了提高自身的服务意识，
+                因此建立了一个全新的移动互联网+资产管理+O2O平台，来满足业主日益增长的关于资讯、收益、提现、管理自己的商铺需求。
+            </div>
+        </section>
+        <section>
+            <img id="hui" class="a-swing" src="./img/jiantou@2x.png" alt="">
+        </section>
+    </div>
+</body>
+<script src="./jquery.min.js"></script>
+<script>
+    $(window).scroll(function(){ 
+            //下面这句主要是获取网页的总高度，主要是考虑兼容性所以把Ie支持的documentElement也写了，这个方法至少支持IE8 
+            var htmlHeight=document.body.scrollHeight||document.documentElement.scrollHeight; 
+            //clientHeight是网页在浏览器中的可视高度， 
+            var clientHeight=document.body.clientHeight||document.documentElement.clientHeight; 
+            //scrollTop是浏览器滚动条的top位置， 
+            var scrollTop=document.body.scrollTop||document.documentElement.scrollTop; 
+            //通过判断滚动条的top位置与可视网页之和与整个网页的高度是否相等来决定是否加载内容； 
+            if(scrollTop+clientHeight > htmlHeight){ 
+                setTimeout(()=>{
+                    self.location='./2.html'
+                },500) 
+            } 
+            // if(scrollTop == 0){ 
+            //     self.location='./1.html' 
+            // } 
+    })
+    $(document).ready(function(){
+        $('#hui').click(function(){
+            self.location='./2.html'
+        })
+    })
+</script>
+</html>

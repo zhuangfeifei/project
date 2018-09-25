@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>基础数据统计</title>
+    <link rel="stylesheet" href="./css/index.less">
+    <script src="./js/jquery.js"></script>
+    <script src="./js/echarts.common.min.js"></script>
+    <script src="./js/progress.js"></script>
+</head>
+<body>
+    <header>
+        <div class="Statistics Statistics2">
+            <p><span>商铺总数</span><span>1545</span></p>
+            <p><span>已过户</span><span>1545</span></p>
+            <p><span>未过户</span><span>1545</span></p>
+        </div>
+        <div class="Statistics2 Statistics1">
+            <p><span>商铺总数</span><span>1545</span></p>
+            <p><span>总分配金额</span><span>15600</span></p>
+            <p><span>实际分配金额</span><span>15600</span></p>
+            <p><span>业主提现率</span><span>92%</span></p>
+        </div>
+    </header>
+
+    <div class="proportion">
+        <div>
+            <!--<div class="proportion_child">
+                <div>
+                    <p>已网签</p>
+                    <p>110</p>
+                </div>
+                <canvas id="signed" width="300" height="300"></canvas>
+            </div>-->
+        </div>
+        <div>
+            
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript">
+    var list = [
+        {a:'已网签',b:100,deg:30},
+        {a:'已签约',b:100,deg:30},
+        {a:'已出证',b:100,deg:30},
+        {a:'抵押',b:100,deg:30},
+        {a:'回购',b:100,deg:30},
+        {a:'待售',b:100,deg:30},
+    ]
+    var circleRadius = 100,fontSize = 30
+    for(var i = 0; i < list.length; i ++){
+        var a = '<div class="proportion_child"><div><p>'+list[i].a+'</p><p>'+list[i].b+'</p></div><canvas id="s'+i+'" width="300" height="300"></canvas></div>'
+        
+        if(i > 2){
+            $('.proportion>div:nth-child(2)').append(a)
+        }else{
+            $('.proportion>div:nth-child(1)').append(a)
+        }
+
+        var b = new Progress({
+            el:'s'+i,//canvas元素id
+            deg:list[i].deg,//绘制角度
+            timer:10,//绘制时间
+            lineWidth:8,//线宽
+            lineBgColor:'#e2e2e2',//底圆颜色
+            lineColor:'#e4393c',//动态圆颜色
+            textColor:'#fdf7f9',//文本颜色
+            fontSize:fontSize,//字体大小
+            circleRadius:circleRadius//圆半径
+        });
+    }
+    
+
+</script>
+
+</html>

@@ -1,0 +1,71 @@
+        *{
+            padding: 0; margin: 0;
+        }
+        body{
+            width: 100%; height: 100%; 
+        }
+        #app{
+            width: 100%; height: 100%; font-size: 4vw;
+        }
+        header{
+            width: 100%; height: 14vw; color: white; text-align: center; font-size: 4.5vw; 
+            background-color: black; line-height: 14vw;
+        }
+        h3{
+            margin: 0; line-height: 14vw;
+        }
+        nav{
+            width: 100%; height: 30vw; line-height: 30vw; font-size: 5vw; text-align: center; font-weight: 600;
+        }
+        nav>p>span:nth-child(2){
+            margin-left: 3vw; letter-spacing: 1vw;
+        }
+        .guize{
+            width: 100%; height: 10vw; text-align: right;
+        }
+        .guize>span{
+            position: relative; right: 5vw; color: #17709f;
+        }
+        .sign{
+            width: 35vw; height: 35vw; text-align: center; line-height: 35vw; font-size: 5vw;font-weight: 600;
+            border: 0.6vw solid gray; margin: 8vw auto; border-radius: 50%; color: gray;
+        }
+        .signs{
+            border: 0.6vw solid #019901; color: #019901; 
+        }
+        footer{
+            width: 100%; height: 30vw; text-align: center; color: #019901; font-size: 3.5vw;
+        }
+        .fa-map-marker{
+            font-size: 6vw;
+        }
+        footer>p:nth-child(2){
+            font-size: 4.5vw;
+        }
+        
+        #times{
+            color: red; letter-spacing: 0.5vw;
+        }
+
+        #myModal{
+            margin-top: 35vh; width: 90%; margin-left: 5%;
+        }
+        .modal-bodys{
+            margin: 0;
+        }
+        .modal-bodys{
+            font-weight: 600; height: 15vw; font-size: 5vw; text-align: center; line-height: 15vw;
+        }
+        .modal-body{
+            letter-spacing: 0.3vw;
+        }
+        .guanbi{
+            width: 100%; outline: none!important;
+        }
+        .imgs{
+            width: 8vw; height: 15vw; position: absolute; bottom: -8vh; left: calc(50% - 4vw);
+        }
+        #container{
+            /*width: 100%; height: 30vh; top: 80vh;*/
+            display: none;
+        }

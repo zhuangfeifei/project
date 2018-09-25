@@ -1,0 +1,58 @@
+/* pages/success/success.wxss */
+
+page {
+    background-color: #eee;
+    font-size: 28rpx;
+}
+
+.s-body {
+    display: flex;
+    padding:50rpx;
+}
+
+.s-contianer {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 40rpx;
+    border-radius: 30rpx;   
+}
+
+.success-tips {
+    text-align: center;
+    padding: 4rpx;
+}
+
+.success-tips .img image {
+    width: 300rpx;
+    height: 300rpx;
+}
+
+.success-tips .pay-status {
+    font-size: 50rpx;
+    padding: 20rpx 0rpx 20rpx 0rpx;
+}
+
+.order-detail {
+    padding: 30rpx;
+}
+
+.order-detail .list {
+    padding: 10rpx;
+    font-size: 28rpx;
+    color: #888888;
+    display: flex;
+    justify-content: space-between;
+}
+
+.center {
+    border-top: 2rpx solid #eee;
+    text-align: center;
+    padding-top: 20rpx;
+}
+
+.center navigator {
+    display: block;
+    height: 50rpx;
+    margin: 10rpx;
+    padding-top: 10rpx;
+}

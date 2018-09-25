@@ -1,0 +1,112 @@
+*{
+    margin: 0; padding: 0; box-sizing: border-box;
+}
+body{
+    width: 100vw; box-sizing: border-box; padding-top: 5vw; padding-bottom: 10vw;
+}
+
+nav{
+    width: 100%; height: 15vw; position: fixed; top: 0; left: 0; z-index: 10;
+    text-align: center; color: white; font-size: 4.5vw; background-color: black;
+}
+nav>span{
+    line-height: 15vw; font-size: 5vw; position: relative; left: -3vw; font-weight: 600;
+}
+nav>img{
+    width: 6vw; height: 6vw; float: left; position: relative; top: 4vw; left: 3vw;
+}
+
+
+.content{
+    width: 100%; padding: 5vw;
+}
+.time{
+    margin: 2vw 0; font-size: 3.5vw; color: gray;
+}
+.contents{
+    width: 100%; min-height: 75vh;
+    word-wrap:break-word;  
+    word-break:break-all;  
+    overflow: hidden;
+}
+.contents>img{
+    margin: 2vw 0;
+}
+
+.login{
+    width: 100%; height: 10vw; line-height: 10vw; text-align: center; color: gray; font-size: 3.5vw; position: relative; top: 30vw;
+}
+.login>img{
+    width: 8vw; height: 8vw;
+}
+
+
+
+
+
+.wu{
+    width: 100%; height: 10vw; text-align: center; color: gray; font-size: 3.5vw; line-height: 15vw; display: none;
+}
+.pinluan{
+    width: 95%; margin: 0 2.5% 10vw 2.5%; font-size: 4vw;
+    /*border: 1px solid red;*/
+}
+.quanbu{
+    width: 100%; height: 10vw; font-size: 3.5vw; border-bottom: 1px solid gainsboro; line-height: 10vw;
+}
+.quanbu>span{
+    border-bottom: 2px solid red; display: inline-block; height: 10vw;
+}
+.zhuti{
+    width: 100%; margin: 0 auto;
+}
+.tou{
+    width: 100%; height: 10vw; display: flex; justify-content: space-between; line-height: 10vw; margin-top: 2vw;
+    font-size: 3.5vw; color: gray;
+    
+}
+.tou span{
+    position: relative; top: -3vw;
+}
+.tou img{
+    width: 9vw; height: 9vw; border-radius: 50%; margin-right: 1vw;
+}
+.neirong{
+    width: 90%; border-bottom: 1px solid gainsboro; margin: 0 auto; padding-left: 6vw; padding-bottom: 2vw;
+}
+.huifu{
+    width: 105%; background-color: ghostwhite; color: gray; padding: 1vw 2vw 0 2vw; font-size: 3.5vw;
+}
+
+
+
+.shuru{
+    width: 100%; height: 12vw; position: fixed; bottom: 0; border-top: 1px solid gainsboro; background-color: white;
+    
+    
+}
+.shuru>img{
+    width: 5vw; height: 5vw; position: relative; left: 8vw; top: 3.5vw;
+}
+.shuru>span:nth-child(4){
+    margin-right: 4vw; color: gray;
+}
+.inputs{
+    width: 60vw; height: 9vw; border: 1px solid gainsboro; float: left; position: relative; top: 1.5vw; left: 5vw; border-radius: 5vw;
+}
+input{
+    width: 100%; height: 100%; outline: none!important; background:none!important; line-height: 5vw; padding-left: 3vw; 
+    border: 0; font-size: 4vw;
+}
+input:focus{outline:none!important;}
+.shuru>span{
+    float: right; font-size: 4vw; position: relative; right: 5vw; top: 3vw; color: #23af22;
+}
+
+
+.zans{
+    width: 100%; height: 10vw; text-align: right; font-size: 3.5vw; padding-right: 5vw; line-height: 10vw;
+}
+.zans img{
+    width: 6vw; height: 6vw; position: relative; top: 1vw;
+}

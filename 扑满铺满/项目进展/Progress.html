@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script src="./js/jquery.js"></script>
+    <style>
+        *{
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+        body{
+            width: 100%; padding-bottom: 5vw; font-size: 4vw;
+        }
+        .content{
+            width: 100%;
+        }
+        .shopProgress{
+            width: 100%; padding-top: 5vw;
+        }
+        .shopProgress1 .yuan1{
+            border: 1vw solid red;
+        }
+        .shopProgress>div:nth-child(1){
+            width: 17%; height: 100%; padding-left: 3vw; padding-top: 3vw;
+            border-right: 0.3vw solid gainsboro; text-align: center;
+        }
+        .shopProgress>div{
+            width: 100%; height: 65vw; display: flex;
+        }
+        .shopProgress>div>div:nth-child(1){
+            width: 17%; height: 100%; padding-right: 3vw;
+            border-right: 0.3vw solid gainsboro; text-align: right;
+        }
+        .yuan{
+            width: 5vw; height: 5vw; border: 1vw solid gainsboro; border-radius: 50%;
+            float: right; position: relative; top: -5.3vw; left: 5.5vw;
+        }
+        a{
+            width: 73%; height: 58vw; margin-top: 3vw; margin-left: 5%;
+            box-shadow: 0vw 0.3vw 1vw gray; color: black; text-decoration: none;
+        }
+        .details{
+            width: 100%; height: 100%;
+        }
+        .details>img{
+            width: 100%; height: 35vw;
+        }
+        .details>h3{
+            display: inline-block; width: 100%; height: 8vw; line-height: 8w; overflow: hidden; padding: 0 1vw;
+            display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
+        }
+        .details>p{
+            display: inline-block; width: 100%; height: 13vw; line-height: 6.5vw; overflow: hidden; padding: 0 1vw;
+            display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; color: gray;
+        }
+        .fanhui{
+            width: 100%; height: 10vw; line-height: 10vw; text-align: left; position: fixed; top: 0; left: 0; z-index: 10;
+        }
+        .fanhui img{
+            width: 5vw; height: 5vw; margin-left: 5vw;
+        }
+    </style>
+</head>
+<body>
+    <div class="fanhui">
+        <img id="fan" src="./img/fanhui.png" alt="">
+    </div>
+    <div class="content">
+        <!--<div>
+            <div><h3>2018</h3><h3>3月</h3><div class="yuan"></div></div>
+            <div><img src="./img/A.png" alt=""><h3>沙发上阿道夫阿发GRE而法国热风阿发答复大法师辅导费发飞水电费反倒是</h3><p>请问而且我</p></div>
+        </div>-->
+        
+    </div>
+</body>
+<script>
+    $(document).ready(function(){
+        document.body.scrollTop = 0
+        document.documentElement.scrollTop = 0
+        
+
+        var apiUrl = 'http://192.168.1.137:8080'
+        var imgUrl = 'http://192.168.1.137:8080/puman/kaptcha/'
+        $.ajax({
+            url: apiUrl + '/puman/api/progress/list',
+            type:'post',
+            dataType:'json',
+            data:{
+                tubeId: GetRequest().id
+            },
+            success: res => {
+                // console.log(res)
+                getShop(res)
+            },
+            error: err => {
+                // console.log(err)
+            }
+        })
+
+        function getShop(res){
+            for(var i = 0; i < res.length; i ++){
+                var shops = '<div class="shopProgress shopProgress'+(i+1)+'"><div><h3>'+res[i].year+'</h3></div></div>'
+                $('.content').append(shops)
+                var shop = res[i].params
+                for(var s = 0; s < shop.length; s ++){
+                    var guan = '<div><div><h3>'+shop[s].month+'月</h3><div class="yuan yuan'+(s+1)+'"></div></div><a href="./details.html?id='+shop[s].id+'"><div class="details details'+(i+1)+''+(s+1)+'"><img src='+imgUrl+shop[s].coverPic+' alt=""><h3>'+shop[s].title+'</h3><p>'+shop[s].describetion+'</p></div></a></div>'
+                    $('.shopProgress'+(i+1)+'').append(guan)
+                }
+                
+            }
+        }
+
+        $('#fan').click(()=>{
+            history.go(-1)
+        })
+
+
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串,如"?p=1"  
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = decodeURI(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+        window.document.title = GetRequest().guan + '馆进展' 
+        
+    })
+</script>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"  http-equiv="Access-Control-Allow-Origin" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>周杰伦歌迷大测验</title>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/jweixin-1.2.0.js"></script>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+    <div id="app">
+
+        <section></section>
+
+        <div v-if="isShow" class="content">
+            <nav>
+                <img src="./img/矢量智能对象拷贝53x.png" alt="">
+                <img src="./img/矢量智能对象拷贝52x.png" alt="">
+                <img src="./img/周杰伦问答大比拼2x.png" alt="">
+            </nav>
+
+            <div v-if="show" class="main">
+                <img src="./img/2.png" alt="">
+                <div v-on:click="start"></div>
+                <!--<img v-on:click="start" src="./img/组412x.png" alt="">-->
+            </div>
+            <div v-if="getList" class="subject">
+                <h3>{{List_Num+1}}.{{getList[List_Num].title}}</h3>
+                <p v-for="(item,index) in getList[List_Num].waps" v-on:click="change(index)">
+                    <img class="list_img" :src="index == num ? img[0] : img[1]" alt="">
+                    <span>{{item.title}}</span>
+                </p>
+                <div class="next">
+                    <div class="Last" v-on:click="Last"></div>
+                    <div v-if="List_Num_show" class="Next" v-on:click="Next"></div>
+                    <div v-else class="Hand_over" v-on:click="Hand_over"></div>
+                </div>
+            </div>
+
+            <img class="ye1" src="./img/矢量智能对象拷贝52x.png" alt="">
+            <img class="ye2" src="./img/矢量智能对象拷贝33x.png" alt="">
+            <img class="ye3" src="./img/矢量智能对象拷贝23x.png" alt="">
+        </div>
+
+        <div v-else class="Result">
+            <div class="Fraction">
+                <img src="./img/周杰伦问答大比拼2x.png" alt="">
+                <img :src='resImg' alt="">
+                <span v-if="result" class="Fraction_content">{{result.scoreSum}}分</span>
+            </div>
+            <div class="bottom">
+                <div class="again">
+                    <img v-on:click="again" src="./img/组6拷贝3x.png" alt="">
+                    <img v-on:click="share" src="./img/组63x.png" alt="">
+                </div>
+                <img class="bottom_img" src="./img/组53x.png" alt="">
+            </div>
+        </div>
+
+        <img v-on:click="share" v-show="share_show" class="share" src="./img/Draw.png" alt="">
+
+    </div>
+</body>
+<script>
+
+    const wxhs = 'sz_fangyuanli'
+    const openIds = 'oLCKIwOtSoGIY6AE5iMe4U1oW-iA'
+    const isDev = false
+    const URLS = isDev ? 'http://192.168.1.193:8090' : 'http://www.homeamc.cn'
+
+    const vm = new Vue({
+        el: '#app',
+        data:{
+            isShow:true,
+            show:true, 
+            id:'',         // 主题id
+            getList:'',    // 全部题目
+            List_Num:0,    // 每一题
+            List_Num_show:true,  // 交卷
+            img:["./img/组62x.png","./img/椭圆2拷贝2x.png"], 
+            num:0,        // 选择哪一项
+            ids:[],      // 全部答案id
+            Last_num:[],  // 记录每题的选项
+            startTime:'',
+            result:'',
+            share_show: false,
+            resImg:''
+        },
+        computed: {
+            
+        },
+        created(){
+            this.getInformation()
+            this.wxs()
+        },
+        methods:{
+            start(){   // 开始答题
+                $.ajax({
+                    url: URLS + '/shopping/answer/getRandomQues',
+                    type: 'post',
+                    data:{ activityId: this.id },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200){
+                            this.show = false
+                            this.getList = res.data
+                            // alert(res)
+                            this.startTime = this.getTime()
+                        }
+                    }, 
+                    error: err => {
+                        console.log(err)
+                    }
+                })
+            },
+            getTime(){
+                // 时间
+                var date = new Date()
+                var year = date.getFullYear()
+                var month  = (date.getMonth() + 1)
+                var day = date.getDate()
+                var hour = date.getHours()
+                var minute = date.getMinutes()
+                var seconds = date.getSeconds()
+
+                // 时间
+                var time = year + '-' + this.jialing(month) + '-' + this.jialing(day) + ' ' + this.jialing(hour) + ':' + this.jialing(minute) + ':' + this.jialing(seconds)
+                return time
+                // console.log(date.toLocaleString())
+            },
+            jialing(num){
+                if (num < 10) {
+                    return String(String(0) + String(num))
+                }else{
+                    return num
+                }
+            },
+            getInformation(){  // 获取活动信息
+                $.ajax({
+                    url: URLS + '/shopping/answer/activity',
+                    type: 'post',
+                    data:{},
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200){
+                            this.id = res.data[0].id
+                        }
+                    }, 
+                    error: err => {
+                        console.log(err)
+                    }
+                })
+            },
+            change(index){    // 选择答案
+                this.num = index
+            },
+            Last(){     // 上一题
+                if(this.List_Num > 0){
+                    this.ids.pop()
+                    this.List_Num --
+                }
+            },
+            Next(){     // 下一题
+                if(this.List_Num < 9){
+                    this.ids.push(this.getList[this.List_Num].waps[this.num].id)
+                    this.List_Num ++
+                    this.num = 0
+                }
+            },
+            Hand_over(){   // 交卷
+                this.ids.push(this.getList[this.List_Num].waps[this.num].id)  // 最后一题
+                $.ajax({
+                    url: URLS + '/shopping/answer/backTestResults',
+                    type: 'post',
+                    data:{ ids: this.ids.join(','), openId:openIds, testStartTime:this.startTime, testEndTime:this.getTime() },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res)
+                        if(res.code == 200){
+                            this.isShow = false
+                            this.result = res.data[0]
+                            this.resImg = './img/'+this.result.leval+'.png'
+                            this.wxs()
+                        }
+                    }, 
+                    error: err => {
+                        console.log(err)
+                    }
+                })
+            },
+            again(){
+                this.isShow = true
+                this.List_Num = 0
+                this.ids = []
+                this.num = 0
+                this.start()
+            },
+            share(){
+                this.share_show = !this.share_show
+            },
+            wxs(){
+                var scoreSum = this.result.scoreSum || '0'
+                var leval = this.result.leval || '菜鸟级杰迷'
+                $.ajax({
+                    url: URLS + '/shopping/answer/shire',
+                    type: 'post',
+                    data:{ wxh: wxhs, openId: openIds },
+                    dataType: 'json',
+                    success: res => {
+                        // console.log(res.data)
+                        if(res.code == 200) {
+                            wx.config({
+                                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                                appId: res.data.appId, // 必填，公众号的唯一标识
+                                timestamp: res.data.timestamp, // 必填，生成签名的时间戳
+                                nonceStr: res.data.nonce, // 必填，生成签名的随机串
+                                signature: res.data.signature,// 必填，签名
+                                jsApiList: ['onMenuShareAppMessage','onMenuShareTimeline'] // 必填，需要使用的JS接口列表
+                            })
+                            wx.ready(()=>{
+                                wx.onMenuShareAppMessage({
+                                    title: '周杰伦歌迷大测验', // 分享标题
+                                    desc: '我在周杰伦歌迷大测验中得到了' + scoreSum + '分，获得了' + leval + '的称号。Jay迷们，你们快来挑战吧！', // 分享描述
+                                    link: 'http://www.homeamc.cn/shopping/jay/seminar?wxh=' + wxhs, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                    imgUrl: 'http://www.homeamc.cn/shopping/static/img/jay.jpeg', // 分享图标
+                                    type: '', // 分享类型,music、video或link，不填默认为link
+                                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                                    success: function (res) {
+                                        // console.log(res)
+                                    },
+                                    fail: function (res) {
+                                        // console.log(res)
+                                    }
+                                })
+                                wx.onMenuShareTimeline({
+                                    title: '周杰伦歌迷大测验', // 分享标题
+                                    link: 'http://www.homeamc.cn/shopping/jay/seminar?wxh=' + wxhs, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                                    imgUrl: 'http://www.homeamc.cn/shopping/static/img/jay.jpeg', // 分享图标
+                                    success: function (res) {
+                                        // console.log(res)
+                                    },
+                                    fail: function (res) {
+                                        // console.log(res)
+                                    }
+                                })
+                            })
+                        }
+                    }, 
+                    error: err => {
+                        console.log(err)
+                    }
+                })
+            },
+        },
+    })
+    vm.$watch("List_Num", function(val,oldval){   // 显示交卷按钮
+        if (val == 9) {
+            this.List_Num_show = false
+        }else{
+            this.List_Num_show = true
+        }
+    })
+</script>
+</html>
